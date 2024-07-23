@@ -14,31 +14,21 @@ class AuthUserLoginSeeder extends Seeder
      */
     public function run(): void
     {
-       $buyer = User::create([
-            'id' => 1, // If your table uses auto-increment for ID, you can omit this field
-            'name' => 'buyer',
-            'email' => 'buyer@gmail.com',
-            'email_verified_at' => Carbon::now(),
-            'password' => Hash::make('Test@123'), // Change to a hashed password
-        ]);
-        $buyer->assignRole(User::ROLE_BUYER);
+        $this->createUser('buyer', 'buyer@gmail.com', User::ROLE_BUYER);
+        $this->createUser('supplier', 'supplier@gmail.com', User::ROLE_SUPPLIER);
+        $this->createUser('admin', 'admin@gmail.com', User::ROLE_ADMIN);
+    }
 
-        $suppleir = User::create([
-            'id' => 2, // If your table uses auto-increment for ID, you can omit this field
-            'name' => 'supplier',
-            'email' => 'supplier@gmail.com',
-            'email_verified_at' => Carbon::now(),
-            'password' => Hash::make('Test@123'), // Change to a hashed password
-        ]);
-        $suppleir->assignRole(User::ROLE_SUPPLIER);
-
-        $admin = User::create([
-            'id' => 3, // If your table uses auto-increment for ID, you can omit this field
-            'name' => 'admin',
-            'email' => 'admin@gmail.com',
-            'email_verified_at' => Carbon::now(),
-            'password' => Hash::make('Test@123'), // Change to a hashed password
-        ]);
-        $admin->assignRole(User::ROLE_ADMIN);
+    private function createUser(string $name, string $email, string $role): void
+    {
+        if (!User::where('email', $email)->exists()) {
+            $user = User::create([
+                'name' => $name,
+                'email' => $email,
+                'email_verified_at' => Carbon::now(),
+                'password' => Hash::make('Test@123'), // Change to a hashed password
+            ]);
+            $user->assignRole($role);
+        }
     }
 }

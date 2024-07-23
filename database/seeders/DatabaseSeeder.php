@@ -15,6 +15,7 @@ use Database\Seeders\AuthUserLoginSeeder;
 use Database\Seeders\CompanySupplierSeeder;
 use Database\Seeders\ProductCategorySeeder;
 use Database\Seeders\RolesAndPermissionsSeeder;
+use Database\Seeders\ShineProductSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -32,6 +33,7 @@ class DatabaseSeeder extends Seeder
         $this->call(PlanSeeder::class);
         $this->call(CompanySupplierSeeder::class);
         $this->call(CompanyBuyerSeeder::class);
+        $this->call(ShineProductSeeder::class);
         // $this->call(ProductSeeder::class);
         // \App\Models\User::factory(10)->create();
 

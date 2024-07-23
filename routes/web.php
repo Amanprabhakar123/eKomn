@@ -23,6 +23,9 @@ use App\Http\Controllers\APIAuth\ProductInvetoryController;
 use App\Http\Controllers\APIAuth\BuyerRegistrationController;
 use App\Http\Controllers\APIAuth\SupplierRegistraionController;
 
+use App\Http\Controllers\Shine\MyShineController;
+use App\Http\Controllers\Shine\ShineCreditController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -116,4 +119,11 @@ Route::group(['prefix' => 'api'], function () {
 Route::middleware(['api', 'jwt.auth', 'emailverified'])->group(function () {
     Route::post('refresh', [AuthController::class, 'refresh']);
     Route::post('me', [AuthController::class, 'me']);
+});
+
+// Define routes for shine module routes
+Route::middleware(['auth', 'api', 'emailverified'])->group(function () {
+    Route::get('myShine', [MyShineController::class, 'my_shine'])->name('my-shine');
+    Route::get('newShine', [MyShineController::class, 'new_shine'])->name('new-shine');
+    Route::post('/shine-products', [MyShineController::class, 'addShine'])->name('shine.store');
 });
