@@ -20,9 +20,9 @@ class MyShineController extends Controller
 {
     public function my_shine()
     {
-        if (auth()->user()->hasRole(User::ROLE_BUYER)) {
-            $shineProducts = MyShine::all();
-            $shineCredits = ShineCredit::all();
+        $user = auth()->user();
+        if ($user->hasRole(User::ROLE_BUYER)) {
+            $shineProducts = MyShine::where('user_id', $user->id)->get();
             return view('dashboard.buyer.my_shine', compact('shineProducts'));
         }
     }
@@ -36,6 +36,7 @@ class MyShineController extends Controller
 
     public function addShine(Request $request) {
         $shineProducts = [];
+        $userId = auth()->id(); // Get the currently authenticated user's ID
     
         $batchIds = $request->input('batchid');
         $requestNos = $request->input('request_no');
@@ -49,9 +50,11 @@ class MyShineController extends Controller
         $feedbackTitles = $request->input('feedback_title');
         $reviewRatings = $request->input('review_rating');
         $feedbackComments = $request->input('feedback_comment');
+        $statuses = $request->input('status', array_fill(0, count($requestNos), 1));
     
         foreach ($requestNos as $index => $requestNo) {
             $shineProducts[] = [
+                'user_id' => $userId,
                 'batch_id' => $batchIds[$index],
                 'request_no' => $requestNos[$index],
                 'name' => $productNames[$index],

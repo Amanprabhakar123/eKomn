@@ -1778,4 +1778,12 @@ h1 {
 .rateustext{margin-top: 2px;margin-right: 5px;}
 textarea.resizer_none{resize:none!important;}
 
+
+.star-rating .fas {
+  color: gold; /* Yellow color for filled stars */
+}
+.star-rating .far {
+  color: lightgray; /* Light gray color for empty stars */
+}
+
 /* end */

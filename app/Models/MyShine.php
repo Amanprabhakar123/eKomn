@@ -12,6 +12,7 @@ class MyShine extends Model
     protected $table = 'shine_products';
 
     protected $fillable = [
+        'user_id',
         'batch_id', 
         'request_no', 
         'name', 
@@ -26,4 +27,12 @@ class MyShine extends Model
         'review_rating', 
         'status'
     ];
+
+    /**
+     * Get the user that owns the product.
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

@@ -126,4 +126,5 @@ Route::middleware(['auth', 'api', 'emailverified'])->group(function () {
     Route::get('myShine', [MyShineController::class, 'my_shine'])->name('my-shine');
     Route::get('newShine', [MyShineController::class, 'new_shine'])->name('new-shine');
     Route::post('/shine-products', [MyShineController::class, 'addShine'])->name('shine.store');
+    Route::get('/shine-credits', [ShineCreditController::class, 'showCredits']);
 });

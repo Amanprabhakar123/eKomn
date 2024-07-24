@@ -115,7 +115,15 @@ My Shine
                               <td>₹ {{ $product->amount }}</td>
                               <td>{{ $product->feedback_title }}</td>
                               <td>{{ $product->feedback_comment }}</td>
-                              <td>{{ $product->review_rating }}</td>
+                              <td class="star-rating">
+                                @for ($i = 1; $i <= 5; $i++)
+                                    @if ($i <= $product->review_rating)
+                                        <i class="fas fa-star"></i> <!-- Filled star -->
+                                    @else
+                                        <i class="far fa-star"></i> <!-- Empty star -->
+                                    @endif
+                                @endfor
+                              </td>
                               <td>
                                 @if($product->status == 0)
                                     <span style='padding: 3px 7px; border-radius: 3px; background-color: #6c757d; color: #fff;'>Draft</span>

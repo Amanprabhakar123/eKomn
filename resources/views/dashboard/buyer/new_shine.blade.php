@@ -18,11 +18,22 @@ New Shine
               <label for="fname">
                 <h6>Batch Value :</h6>
               </label>
-              <a href="#" class="btn btnekomn btn-sm">₹ 2000</a>
+              <a href="#" class="btn btnekomn btn-sm amount">₹ </a>
               <label for="fname">
                 <h6>Target Value :</h6>
               </label>
-              <a href="#" class="btn btnekomn btn-sm">₹ 1000-2000</a>
+              <a href="#" class="btn btnekomn btn-sm target">₹ 1000 - 2000</a>
+              {{-- @section('content')
+                <div class="container">
+                @if($shineCredits)
+                  <a href="#" class="btn btnekomn btn-sm">
+                    ₹ {{ $shineCredits->range }}
+                  </a>
+                @else
+                <p>No records found.</p>
+                @endif
+              </div>
+              @endsection --}}
             </div>
           </div>
         </div>
@@ -873,6 +884,14 @@ document.getElementById('cancelButton').addEventListener('click', function() {
   });
 
 $(document).ready(function() {
+  // Initial setup
+  updateTotalAmount();
+
+  // Add event listeners for amount fields to update the total in real-time
+  $('input[name="amount[]"]').on('input', function() {
+      updateTotalAmount();
+  });
+
   $('#shinetab1').click(function() {
       let isValid = true;
 
@@ -1081,6 +1100,18 @@ $(document).ready(function() {
           return false;
       }
   }
+
+  function updateTotalAmount() {
+        let totalAmount = 0;
+        $('input[name="amount[]"]').each(function() {
+            const amount = parseFloat($(this).val());
+            if (!isNaN(amount)) {
+                totalAmount += amount;
+            }
+        });
+        $('.btn.btnekomn.btn-sm.amount').text(`₹ ${totalAmount.toFixed(2)}`);
+    }
+
 });
 </script>
 @endsection
