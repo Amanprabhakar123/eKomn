@@ -214,8 +214,10 @@ Assign Shine
                     </div>
                 </div>
             </div>
-            @if($productReview->feedback_comment)
+            @if(($productReview->feedback_comment)AND(!$productReview->requestor_confirmation_complition))
               <h6 class="text-primary pt-2">You have completed Acknowledgment of Shine successfully. Now wait for the confirmation</h6>
+            @else
+              <h6 class="text-primary pt-2">Congratulations...! You have completed your shine request.</h6>
             @endif
             <div class="row pt-3">
               <div class="col-sm-12 col-md-12">
