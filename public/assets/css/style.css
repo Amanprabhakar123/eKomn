@@ -1785,5 +1785,8 @@ textarea.resizer_none{resize:none!important;}
 .star-rating .far {
   color: lightgray; /* Light gray color for empty stars */
 }
+.red-text {
+  color: red;
+}
 
 /* end */

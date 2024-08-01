@@ -36,6 +36,6 @@ class CreateShineProductsTable extends Migration
     {
         Schema::dropIfExists('shine_products');
     }
-}
+};
 
 

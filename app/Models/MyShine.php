@@ -31,8 +31,18 @@ class MyShine extends Model
     /**
      * Get the user that owns the product.
      */
-    public function user()
+    public function requestor()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function assigner()
+    {
+        return $this->belongsTo(User::class, 'assigner_id');
+    }
+
+    public function productReview()
+    {
+        return $this->hasOne(ProductReview::class, 'product_id', 'id');
     }
 }

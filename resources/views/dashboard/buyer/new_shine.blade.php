@@ -22,7 +22,7 @@ New Shine
               <label for="fname">
                 <h6>Target Value :</h6>
               </label>
-              <a href="#" class="btn btnekomn btn-sm target">₹ 1000 - 2000</a>
+              <a href="#" class="btn btnekomn btn-sm">₹ 1000-2000</a>
               {{-- @section('content')
                 <div class="container">
                 @if($shineCredits)

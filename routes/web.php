@@ -25,6 +25,7 @@ use App\Http\Controllers\APIAuth\SupplierRegistraionController;
 
 use App\Http\Controllers\Shine\MyShineController;
 use App\Http\Controllers\Shine\ShineCreditController;
+use App\Http\Controllers\Shine\ProductController;
 
 /*
 |--------------------------------------------------------------------------
@@ -126,5 +127,20 @@ Route::middleware(['auth', 'api', 'emailverified'])->group(function () {
     Route::get('myShine', [MyShineController::class, 'my_shine'])->name('my-shine');
     Route::get('newShine', [MyShineController::class, 'new_shine'])->name('new-shine');
     Route::post('/shine-products', [MyShineController::class, 'addShine'])->name('shine.store');
-    Route::get('/shine-credits', [ShineCreditController::class, 'showCredits']);
+    // shine module routes
+    Route::get('assignedShine/Status_{id}', [MyShineController::class, 'complete_shine'])->name('complete-shine');
+    Route::get('myShine/Status_{id}', [MyShineController::class, 'shine_status'])->name('shine-status');
+    Route::get('/download-shine-order-invoice/{id}', [MyShineController::class, 'download_shine_order_invoice'])->name('download_shine_order_invoice.download');
+    Route::get('/download-shine-screenshots/{id}', [MyShineController::class, 'download_shine_screenshots'])->name('download_shine_screenshots.download');
+    Route::put('/shine-product-reviews1/{productId}', [MyShineController::class, 'update_product_review1']);
+    Route::put('/shine-product-reviews2/{productId}', [MyShineController::class, 'update_product_review2']);
+    Route::put('/shine-product-reviews3/{productId}', [MyShineController::class, 'update_product_review3']);
+    Route::put('/shine-product-reviews4/{productId}', [MyShineController::class, 'update_product_review4']);
+
+    // Route::get('/shine-credits', [ShineCreditController::class, 'showCredits']);
+    Route::get('/assigner/products', [ProductController::class, 'showAssignedProducts'])->name('assigner.products');
+    Route::get('/assigner/submit-order-details/{id}', [ProductController::class, 'showOrderDetailsForm'])->name('assigner.submitOrderDetailsForm');
+    Route::post('/assigner/submit-order-details', [ProductController::class, 'submitOrderDetails'])->name('assigner.submitOrderDetails');
+
+
 });

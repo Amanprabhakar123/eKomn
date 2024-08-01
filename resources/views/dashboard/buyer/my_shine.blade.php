@@ -8,7 +8,7 @@ My Shine
     <div class="ek_content">
       <div class="card ekcard pa shadow-sm">
         <div class="cardhead ">
-          <h3 class="cardtitle">My Shine</h3>
+          <h3 class="cardtitle">Shine</h3>
           <div style="display: flex; flex-direction: column; align-items: flex-end; margin-left: 10px;">
             <div>
               <label for="fname">
@@ -30,10 +30,10 @@ My Shine
               <a class="nav-link" id="live-shine-tab" data-bs-toggle="tab" data-bs-target="#live-shine" role="tab"
                 aria-controls="live-shine" aria-selected="false">Assigned Shine</a>
             </li>
-            <li class="nav-item" role="presentation">
+            {{-- <li class="nav-item" role="presentation">
               <a class="nav-link" id="assigned-tab" data-bs-toggle="tab" data-bs-target="#assigned" role="tab"
                 aria-controls="assigned" aria-selected="false">Assigned Shine Live</a>
-            </li>
+            </li> --}}
           </ul>
           <div class="tab-content" id="pills-tabContent">
             <div class="tab-pane fade show active" id="shine" role="tabpanel" aria-labelledby="shine-tab" tabindex="0">
@@ -76,20 +76,25 @@ My Shine
                         </span>
                       </th>
                       <th>Product Name</th>
-                      <th>Platform</th>
+                      {{-- <th>Platform</th> --}}
                       <th>Product URL/Link</th>
                       <th>Product ID/ASIN</th>
-                      <th>Seller/Brand Name</th>
-                      <th>Product Search Term </th>
+                      {{-- <th>Seller/Brand Name</th> --}}
+                      {{-- <th>Product Search Term </th> --}}
                       <th>Product amount</th>
-                      <th>Feedback/Review Title</th>
-                      <th>Feedback/Review comment</th>
-                      <th>Review Rating</th>
+                      {{-- <th>Feedback/Review Title</th> --}}
+                      {{-- <th>Feedback/Review comment</th> --}}
+                      {{-- <th>Review Rating</th> --}}
                       <th>Status</th>
                       <th>Action</th>
                     </tr>
                   </thead>
                     <tbody id="dataShine">
+                      @if($shineProducts->isEmpty())
+                          <tr>
+                              <td colspan="9" style="text-align: center;">No Shine Data Found, Add New Shine First...</td>
+                          </tr>
+                      @else
                       @foreach($shineProducts as $product)
                           <tr>
                             <td>
@@ -101,7 +106,7 @@ My Shine
                                 <i class="fas fa-copy copy-icon" style="cursor: pointer; margin-left: 5px;" onclick="copyToClipboard('requestNo-{{ $product->id }}')"></i>
                             </td>
                               <td>{{ $product->name }}</td>
-                              <td>{{ $product->platform }}</td>
+                              {{-- <td>{{ $product->platform }}</td> --}}
                               <td>
                                   <span id="url-{{ $product->id }}"><a href="{{ $product->url }}" target="_blank">{{ $product->url }}</a></span>
                                   <i class="fas fa-copy copy-icon" style="cursor: pointer; margin-left: 5px;" onclick="copyToClipboard('url-{{ $product->id }}')"></i>
@@ -110,12 +115,12 @@ My Shine
                                 <span id="productId-{{ $product->id }}">{{ $product->product_id }}</span>
                                 <i class="fas fa-copy copy-icon" style="cursor: pointer; margin-left: 5px;" onclick="copyToClipboard('productId-{{ $product->id }}')"></i>
                               </td>
-                              <td>{{ $product->seller_name }}</td>
-                              <td>{{ $product->search_term }}</td>
+                              {{-- <td>{{ $product->seller_name }}</td> --}}
+                              {{-- <td>{{ $product->search_term }}</td> --}}
                               <td>₹ {{ $product->amount }}</td>
-                              <td>{{ $product->feedback_title }}</td>
-                              <td>{{ $product->feedback_comment }}</td>
-                              <td class="star-rating">
+                              {{-- <td>{{ $product->feedback_title }}</td> --}}
+                              {{-- <td>{{ $product->feedback_comment }}</td> --}}
+                              {{-- <td class="star-rating">
                                 @for ($i = 1; $i <= 5; $i++)
                                     @if ($i <= $product->review_rating)
                                         <i class="fas fa-star"></i> <!-- Filled star -->
@@ -123,7 +128,7 @@ My Shine
                                         <i class="far fa-star"></i> <!-- Empty star -->
                                     @endif
                                 @endfor
-                              </td>
+                              </td> --}}
                               <td>
                                 @if($product->status == 0)
                                     <span style='padding: 3px 7px; border-radius: 3px; background-color: #6c757d; color: #fff;'>Draft</span>
@@ -143,11 +148,12 @@ My Shine
                                     <span style='padding: 3px 7px; border-radius: 3px; background-color: #dc3545; color: #fff;'>Cancelled</span>
                                 @endif
                               </td>
-                              <td>
-                                <a href="#">View/edit</a>
+                              <td>      
+                                <a href="{{ route('shine-status', $product->id) }}" class="btn btnekomn btn-sm">View Details</a>
                               </td>
                           </tr>
                       @endforeach
+                      @endif
                     </tbody>
                 </table>
               </div>
@@ -182,7 +188,7 @@ My Shine
                         <option value="">Inprogress</option>
                         <option value="">Order Placed</option>
                         <option value="">Order Confirm</option>
-                        <option value="">Revire Submited</option>
+                        <option value="">Review Submited</option>
                         <option value="">Complete</option>
                         <option value="">Cancelled</option>
                       </select>
@@ -208,79 +214,69 @@ My Shine
                       <th>Platform</th>
                       <th>Product URL/Link</th>
                       <th>Product ID/ASIN</th>
-                      <th>Seller/Brand Name</th>
+                      {{-- <th>Seller/Brand Name</th>
                       <th>Product Search Term </th>
                       <th>Product amount</th>
                       <th>Feedback/Review Title</th>
                       <th>Feedback/Review comment</th>
-                      <th>Review Rating</th>
+                      <th>Review Rating</th> --}}
                       <th>Status</th>
                       <th>Action</th>
                     </tr>
                   </thead>
                   <tbody>
+                    @if($assignedProducts->isEmpty())
+                        <tr>
+                            <td colspan="9" style="text-align: center;">Not Assigned Shine Yet, Add New Shine First...</td>
+                        </tr>
+                    @else
+                    @foreach($assignedProducts as $product)
                     <tr>
-                      <td>EK001</td>
-                      <td>EKS0001</td>
-                      <td>Men Shoes</td>
-                      <td>Flipkart</td>
+                      <td>{{ $product->batch_id }}</td>
+                      <td>{{ $product->request_no }}</td>
+                      <td>{{ $product->name }}</td>
+                      <td>{{ $product->platform }}</td>
+                      <td><a target="_blank" href="{{ $product->url }}">Product Link</a></td>
+                      <td>{{ $product->product_id }}</td>
+                      {{-- <td>{{ $product->seller_name }}</td>
+                      <td>{{ $product->search_term }}</td>
+                      <td>₹ {{ $product->amount }}</td>
+                      <td>{{ $product->feedback_title }}</td>
+                      <td>{{ $product->feedback_comment }}</td>
+                      <td class="star-rating">
+                        @for ($i = 1; $i <= 5; $i++)
+                            @if ($i <= $product->review_rating)
+                                <i class="fas fa-star"></i> 
+                            @else
+                                <i class="far fa-star"></i> 
+                            @endif
+                        @endfor
+                      </td> --}}
                       <td>
-                        <a target="_blank" href="#">Product Link</a>
+                        @if($product->status == 0)
+                            <span style='padding: 3px 7px; border-radius: 3px; background-color: #6c757d; color: #fff;'>Draft</span>
+                        @elseif($product->status == 1)
+                            <span style='padding: 3px 7px; border-radius: 3px; background-color: #ffc107; color: #000;'>Pending</span>
+                        @elseif($product->status == 2)
+                            <span style='padding: 3px 7px; border-radius: 3px; background-color: #17a2b8; color: #fff;'>Inprogress</span>
+                        @elseif($product->status == 3)
+                            <span style='padding: 3px 7px; border-radius: 3px; background-color: #007bff; color: #fff;'>Order Placed</span>
+                        @elseif($product->status == 4)
+                            <span style='padding: 3px 7px; border-radius: 3px; background-color: #28a745; color: #fff;'>Order Confirm</span>
+                        @elseif($product->status == 5)
+                            <span style='padding: 3px 7px; border-radius: 3px; background-color: #ffc107; color: #000;'>Review Submitted</span>
+                        @elseif($product->status == 6)
+                            <span style='padding: 3px 7px; border-radius: 3px; background-color: #28a745; color: #fff;'>Complete</span>
+                        @elseif($product->status == 7)
+                            <span style='padding: 3px 7px; border-radius: 3px; background-color: #dc3545; color: #fff;'>Cancelled</span>
+                        @endif
                       </td>
                       <td>
-                        EK501IND
-                      </td>
-                      <td>PUMA</td>
-                      <td>Puma Men Shoes</td>
-                      <td>₹ 3999 </td>
-                      <td>Best product</td>
-                      <td>XYZ</td>
-                      <td>5</td>
-                      <td>
-                        <span
-                          style='padding: 3px 7px; border-radius: 3px; background-color: #28a745; color: #fff;'>Completed</span>
-                        <span
-                          style='padding: 3px 7px; border-radius: 3px; background-color: #dc3545; color: #fff;'>Cancelled</span>
-                        <span
-                          style='padding: 3px 7px; border-radius: 3px; background-color: #ffc107; color: #000;'>Inprogress</span>
-                        <span
-                          style='padding: 3px 7px; border-radius: 3px; background-color: #dc3545; color: #fff;'>Pending</span>
-                      </td>
-                      <td>
-                        <button class="btn btn-link btn-sm">View/Edit</button>
+                        <a href="{{ route('complete-shine', $product->id) }}" class="btn btnekomn btn-sm">Complete Shine</a>
                       </td>
                     </tr>
-                    <tr>
-                      <td>EK002</td>
-                      <td>EKS0001</td>
-                      <td>Women Shoes</td>
-                      <td>Amazon</td>
-                      <td>
-                        <a target="_blank" href="#">Product Link</a>
-                      </td>
-                      <td>
-                        EK502IND
-                      </td>
-                      <td>Nike</td>
-                      <td>Nike Women Shoes</td>
-                      <td>₹ 2499</td>
-                      <td>Best brand</td>
-                      <td>XYZ</td>
-                      <td>5</td>
-                      <td>
-                        <span
-                          style='padding: 3px 7px; border-radius: 3px; background-color: #28a745; color: #fff;'>Completed</span>
-                        <span
-                          style='padding: 3px 7px; border-radius: 3px; background-color: #dc3545; color: #fff;'>Cancelled</span>
-                        <span
-                          style='padding: 3px 7px; border-radius: 3px; background-color: #ffc107; color: #000;'>Inprogress</span>
-                        <span
-                          style='padding: 3px 7px; border-radius: 3px; background-color: #dc3545; color: #fff;'>Pending</span>
-                      </td>
-                      <td>
-                        <button class="btn btn-link btn-sm">View/Edit</button>
-                      </td>
-                    </tr>
+                    @endforeach
+                    @endif                
                   </tbody>
                 </table>
               </div>
@@ -301,7 +297,7 @@ My Shine
                 </div>
               </div>
             </div>
-            <div class="tab-pane fade" id="assigned" role="tabpanel" aria-labelledby="assigned-tab" tabindex="0">
+            {{-- <div class="tab-pane fade" id="assigned" role="tabpanel" aria-labelledby="assigned-tab" tabindex="0">
               <div class="cardhead">
                 <h4 class="cardtitle">Assigned Requests</h4>
                 <div style="margin: 0; margin-left: 10px; display: inline-block;">
@@ -1348,7 +1344,7 @@ My Shine
                   </div>
                 </div>
               </div>
-            </div>
+            </div> --}}
           </div>
         </div>
       </div>
