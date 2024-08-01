@@ -115,10 +115,10 @@ class MyShineController extends Controller
                 'updated_at' => now(),
             ];
         }
-    
+
         DB::beginTransaction();
         try {
-            // Insert shine products and get the inserted IDs
+            // Insert shine products
             ShineProduct::insert($shineProducts);
     
             // Retrieve the IDs of the inserted shine products
@@ -126,6 +126,7 @@ class MyShineController extends Controller
                                                  ->whereIn('request_no', $requestNos)
                                                  ->get();
     
+            $shineProductReviews = [];
             foreach ($insertedShineProducts as $shineProduct) {
                 $shineProductReviews[] = [
                     'shine_product_id' => $shineProduct->id,
@@ -138,6 +139,12 @@ class MyShineController extends Controller
             ShineProductReview::insert($shineProductReviews);
     
             DB::commit();
+    
+            // Dispatch the AssignShineJob for each newly created product
+            foreach ($insertedShineProducts as $shineProduct) {
+                AssignShineJob::dispatch($shineProduct);
+            }
+    
             return response()->json([
                 'success' => true,
                 'data' => $shineProducts

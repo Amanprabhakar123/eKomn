@@ -25,9 +25,16 @@ class AssignShineJob implements ShouldQueue
 
     public function handle()
     {
+        // Check if this product has already been assigned
+        if ($this->product->assigner_id) {
+            return; // Product is already assigned
+        }
+
+        // Attempt to find a matching product
         $matchingProduct = ShineProduct::where('amount', $this->product->amount)
             ->where('status', ShineProduct::STATUS_PENDING)
             ->where('id', '!=', $this->product->id)
+            ->where('user_id', '!=', $this->product->user_id)
             ->first();
 
         if ($matchingProduct) {
@@ -41,11 +48,13 @@ class AssignShineJob implements ShouldQueue
             $matchingProduct->status = ShineProduct::STATUS_INPROGRESS;
             $matchingProduct->save();
         } else {
+            // If no matching product is found, check the elapsed time
             if (now()->diffInHours($this->product->created_at) > 48) {
                 $this->product->status = ShineProduct::STATUS_CANCELLED;
                 $this->product->save();
             } else {
-                self::dispatch($this->product)->delay(now()->addHours(1));
+                // Re-dispatch the job to run after a delay
+                self::dispatch($this->product)->delay(now()->addMinutes(10)); // Retry after 10 minutes
             }
         }
     }
