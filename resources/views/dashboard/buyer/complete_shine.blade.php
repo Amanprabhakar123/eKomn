@@ -319,7 +319,7 @@ function validateForm1(event) {
     formData.append('_token', '{{ csrf_token() }}');
 
     $.ajax({
-      url: `/shine-product-reviews2/${$('#productId').val()}`,
+      url: `/shine-product-reviews1/${$('#productId').val()}`,
       type: 'POST', // Use POST for method override
       data: formData,
       contentType: false,

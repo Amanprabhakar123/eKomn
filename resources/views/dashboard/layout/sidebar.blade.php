@@ -113,7 +113,6 @@
             </li>
           </ul>
         </li>
-        @if(auth()->user()->hasRole(ROLE_BUYER))
         <li class="nav-item">
           <a class="nav-link collapsed nav-link-arrow" data-bs-toggle="collapse" href="#Shine"
             data-bs-parent="#dashboard_ekomn" id="components">
@@ -122,18 +121,21 @@
             <span class="menu_arrowIcon"><i class="fas fa-angle-right"></i></span>
           </a>
           <ul class="sidenav-second-level collapse" id="Shine" data-bs-parent="#dashboard_ekomn">
+            @if(auth()->user()->hasRole(ROLE_BUYER))
             <li>
               <a class="nav-link" href="{{route('my-shine')}}">My Shine</a>
             </li>
             <li>
               <a class="nav-link" href="{{route('new-shine')}}">New Shine</a>
             </li>
+            @endif
+            @if(auth()->user()->hasRole(ROLE_ADMIN))
             <li>
-              <a class="nav-link" href="#">Admin View</a>
+              <a class="nav-link" href="{{route('shine')}}">Shine</a>
             </li>
+            @endif
           </ul>
         </li>
-        @endif
         <li class="nav-item">
           <a class="nav-link" href="#">
             <i class="fas fa-headset menuIcon"></i>
