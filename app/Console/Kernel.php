@@ -4,6 +4,7 @@ namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use App\Console\Commands\AssignShineProducts;
 
 class Kernel extends ConsoleKernel
 {
@@ -15,6 +16,7 @@ class Kernel extends ConsoleKernel
         // $schedule->command('inspire')->hourly();
         $schedule->command('image:compression')->everyMinute()->withoutOverlapping();
         $schedule->command('process:bulk-upload-product')->everyMinute()->withoutOverlapping();
+        $schedule->command('shine:assign-products')->everyMinute()->withoutOverlapping();
     }
 
     /**

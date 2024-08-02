@@ -134,16 +134,11 @@ class MyShineController extends Controller
                     'updated_at' => now(),
                 ];
             }
-    
+
             // Insert reviews
             ShineProductReview::insert($shineProductReviews);
     
             DB::commit();
-    
-            // Dispatch the AssignShineJob for each newly created product
-            foreach ($insertedShineProducts as $shineProduct) {
-                AssignShineJob::dispatch($shineProduct);
-            }
     
             return response()->json([
                 'success' => true,
