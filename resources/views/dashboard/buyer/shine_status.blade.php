@@ -130,6 +130,9 @@ Complete Shine
               </div>
             </div>
             <div class="imagecontainer" id="imagecontainerVariation-1">
+            @if(!$productReview->order_number)
+              <h6 class="text-danger pt-2">Your product is under Inprogress... Please wait for product Order Dtails.</h6>
+            @endif
             <!-- Other product details here -->
             <input type="hidden" class="form-control" name="batch_id" value="{{ $product->batch_id }}">
             <input type="hidden" class="form-control" name="request_no" value="{{ $product->request_no }}">
@@ -166,9 +169,9 @@ Complete Shine
                 @if(!$productReview->requestor_confirmation)
                   <h6 class="text-danger">Your Shine review order has been placed. Please review the order details above and confirm receipt.</h6>
                 @else
-                  <h6 class="text-primary">Thanks for your confirmation.</h6>
+                  <h6 class="text-primary">Thanks for your confirmation, Now wait for the Assigner's Acknowledgment of Shine Completion.</h6>
                 @endif
-                <div class="col-sm-12 col-md-5">
+                <div class="col-sm-12 col-md-5 mt-4">
                   <div class="ek_group">
                     <label class="eklabel req ms-2"><span>Shine Order received?</span></label>
                     <div class="form-check form-check-inline">
@@ -185,16 +188,18 @@ Complete Shine
                     </div>
                     <span class="text-danger hide" id="requestor_confirmationError">Please Select Yes/No.</span>
                   </div>
-                </div>            
+                </div>   
                 <div class="col-sm-12 col-md-5">
                   <div class="ek_group">
                     <label class="eklabel req"><span>Comment:</span></label>
                     <div class="ek_f_input">
-                        <textarea class="form-control" id="requestor_comment" placeholder="Write your comment." {{ $productReview->requestor_comment ? 'disabled' : '' }}>{{ $productReview->requestor_comment }}</textarea>
-                        <span class="text-danger hide" id="requestor_commentError">Comment is required.</span>
+                      <textarea class="form-control" id="requestor_comment" placeholder="Write your comment." {{ $productReview->requestor_comment ? 'disabled' : '' }}>{{ $productReview->requestor_comment }}</textarea>
+                      <span class="text-danger hide" id="requestor_commentError">Comment is required.</span>
+                      <span class="text-danger hide" id="requestor_commentInvalidError">Numbers and email addresses are not allowed.</span>
                     </div>
                   </div>
                 </div>
+                
                 <div class="col-sm-12 col-md-2 mt-2">
                   <div class="ek_group">
                     <button type="button" onclick="validateForm1(event)" class="btn btn-login btnekomn" id="downloadButton" {{ $productReview->requestor_comment ? 'disabled' : '' }}>Confirm</button>
@@ -204,14 +209,14 @@ Complete Shine
             </div>
             </div>
             <div class="imagecontainer" id="imagecontainerVariation-1">
+              @if($productReview->requestor_confirmation)
+                <h6 class="text-danger pt-2">Assigner's Acknowledgment of Shine Completion is processed. Now Please Review below your Review and comment is live.</h6>
+              @endif
             <div class="row pt-1">
                 <div class="col-sm-12 col-md-12">
                     <h6 class="bold">Assigner's Acknowledgment of Shine Completion :</h6>
                 </div>
             </div>
-            @if($productReview->feedback_comment)
-              <h6 class="text-primary pt-2">Assigner's Acknowledgment of Shine Completion is processed. Now Please Review below your Review and comment is live.</h6>
-            @endif
             <div class="row">
                 <div class="col-sm-12 col-md-12">
                     <div class="ek_group">
@@ -236,17 +241,17 @@ Complete Shine
                     <div class="ek_group">
                         <label class="eklabel req"><span>Comment by assigner :</span></label>
                         <div class="ek_f_input">
-                            <textarea class="form-control" id="comments" placeholder="Updated Soon." {{ $productReview->feedback_comment ? 'disabled' : '' }} >{{ $productReview->feedback_comment }}</textarea>
+                            <textarea class="form-control" id="comments" placeholder="Updated Soon." disabled>{{ $productReview->feedback_comment }}</textarea>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="row pt-4">
-              @if($productReview->order_invoice)
+              @if($productReview->screenshots)
                 @if($productReview->requestor_confirmation_complition)
                   <h6 class="text-primary">Thanks for your confirmation.</h6>
                 @else
-                  <h6 class="text-danger pt-2">Now Please Confirm below your Review and comment is live.</h6>
+                  <h6 class="text-danger pt-2">Please Confirm your Review and comment is live.</h6>
                 @endif
                 <div class="col-sm-12 col-md-10">
                   <div class="ek_group">
@@ -302,9 +307,9 @@ Complete Shine
             </div>
             </div>
             <div class="saveform_footer">
-                <button type="button" class="btn btn-login btnekomn card_f_btn previous_Tab" style="align-items: flex-start" onclick="window.history.back()">
-                    <i class="fas fa-arrow-left me-3 fs-13"></i>Back
-                </button>
+              <button type="button" class="btn btn-login btnekomn card_f_btn previous_Tab" id="cancelButton">
+                  <i class="fas fa-arrow-left me-3 fs-13"></i>Back
+              </button>
             </div>
           </div>
           </div>
@@ -315,6 +320,10 @@ Complete Shine
 @endsection
 @section('scripts')
 <script>
+  // Go Back
+  document.getElementById('cancelButton').addEventListener('click', function() {
+    window.location.href = "{{ route('my-shine') }}?tab=shine";
+  });
   // Form1 Validation
 function validateForm1(event) {
   event.preventDefault();
@@ -331,13 +340,25 @@ function validateForm1(event) {
     $('#requestor_confirmationError').addClass('hide');
   }
 
+  // Validate comment
   if (!requestor_comment) {
     $('#requestor_commentError').removeClass('hide');
     isValid = false;
   } else {
     $('#requestor_commentError').addClass('hide');
+        
+    // Check if comment contains numbers or email addresses
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const containsEmail = emailPattern.test(requestor_comment);
+    const containsNumber = /\d/.test(requestor_comment);
+        
+    if (containsEmail || containsNumber) {
+      $('#requestor_commentInvalidError').removeClass('hide');
+      isValid = false;
+    } else {
+      $('#requestor_commentInvalidError').addClass('hide');
+    }
   }
-
 
   if (isValid) {
     const formData = new FormData();
@@ -355,6 +376,7 @@ function validateForm1(event) {
       success: function(response) {
         alert('Thanks for your confirmation.');
         $('#saveButton1').prop('disabled', true);
+        location.reload();
       },
       error: function(xhr) {
         alert('error.');
@@ -392,6 +414,7 @@ function validateForm1(event) {
       processData: false,
       success: function(response) {
         alert('Thanks for your confirmation.');
+        location.reload();
       },
       error: function(xhr) {
         alert('error.');

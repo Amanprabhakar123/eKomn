@@ -242,7 +242,6 @@ class MyShineController extends Controller
         ]);
 
         $productReview = ShineProductReview::where('shine_product_id', $productId)->firstOrFail();
-        $productReview->order_number = $request->order_number;
         $productReview->feedback_comment = $request->feedback_comment;
 
         if ($request->hasFile('screenshots')) {

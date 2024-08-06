@@ -131,12 +131,15 @@ Assign Shine
             </div>
             <div class="imagecontainer" id="imagecontainerVariation-1">
               <!-- Other product details here -->
+              @if(!$productReview->order_number)
+                <h6 class="text-danger pt-2">Please do order your assigned Product Shine and Upload your Order Dtails.</h6>
+              @endif
               <input type="hidden" class="form-control" id="productId" name="product_id" value="{{ $product->id }}">
               <h4 class="subheading">Order Details</h4>
               <div class="row">
                 <div class="col-sm-12 col-md-6">
                   <div class="ek_group">
-                    <label class="eklabel req"><span>Order No :</span></label>
+                    <label class="eklabel req"><span>Order ID/No :</span></label>
                     <div class="ek_f_input">
                       <input type="text" class="form-control" id="orderNumber" value="{{ $productReview->order_number }}" placeholder="Please type your order number." {{ $productReview->order_number ? 'disabled' : '' }} />
                       <span class="text-danger hide" id="orderNumberError">Order number is required.</span>
@@ -171,12 +174,29 @@ Assign Shine
                   @if(!$productReview->requestor_confirmation)
                     <h6 class="text-danger pt-2">Please wait for the confirmation of your Order Details.</h6>
                   @else
-                    <h6 class="text-primary pt-2">Your Order Details Confirmed. Now Complete your Acknowledgment of Shine Completion Below.</h6>
+                    <h6 class="text-primary pt-2">Your Order Details Confirmed.</h6>
                   @endif
-                @endif
+                @endif   
+                @if($productReview->requestor_comment)
+                <div class="col-sm-12 col-md-12 mt-3">
+                  <div class="ek_group">
+                    <label class="eklabel req"><span>Confirmation Massage:</span></label>
+                    <div class="ek_f_input">
+                      <textarea class="form-control" placeholder="Write your comment." disabled>{{ $productReview->requestor_comment }}</textarea>
+                      <span class="text-danger hide" id="requestor_commentError">Comment is required.</span>
+                    </div>
+                  </div>
+                </div>
+                @endif 
               </div>
             </div>
             <div class="imagecontainer" id="imagecontainerVariation-1">
+              @if($productReview->requestor_comment)
+                @if(!$productReview->feedback_comment)
+                  <h6 class="text-danger pt-2">Now Complete your Acknowledgment of Shine Completion Below.</h6>
+                @endif
+              @endif 
+            @if($productReview->requestor_comment)
             <div class="row pt-1">
                 <div class="col-sm-12 col-md-12">
                     <h6 class="bold">Acknowledgment of Shine Completion :</h6>
@@ -208,15 +228,17 @@ Assign Shine
                     <div class="ek_group">
                         <label class="eklabel req"><span>Any Other Comments :</span></label>
                         <div class="ek_f_input">
-                            <textarea class="form-control" id="feedback_comment" placeholder="Share your feedback comment or review on this order." {{ $productReview->feedback_comment ? 'disabled' : '' }}></textarea>
+                            <textarea class="form-control" id="feedback_comment" placeholder="Share your feedback comment or review on this order." {{ $productReview->feedback_comment ? 'disabled' : '' }}>{{ $productReview->feedback_comment }}</textarea>
                             <span class="text-danger hide" id="feedback_commentError">Comments are required.</span>
                         </div>
                     </div>
                 </div>
             </div>
+            @endif 
             @if(($productReview->feedback_comment)AND(!$productReview->requestor_confirmation_complition))
               <h6 class="text-primary pt-2">You have completed Acknowledgment of Shine successfully. Now wait for the confirmation</h6>
-            @else
+            @endif
+            @if(($productReview->requestor_confirmation_complition))
               <h6 class="text-primary pt-2">Congratulations...! You have completed your shine request.</h6>
             @endif
             <div class="row pt-3">
@@ -247,7 +269,7 @@ Assign Shine
               </div>
             </div>
             <div class="saveform_footer">
-                <button type="button" class="btn btn-login btnekomn card_f_btn previous_Tab" onclick="window.history.back()">
+                <button type="button" class="btn btn-login btnekomn card_f_btn previous_Tab" id="cancelButton">
                     <i class="fas fa-arrow-left me-3 fs-13"></i>Back
                 </button>
                 <button type="submit" id="saveButton2" onclick="validateForm2(event)" class="btn btn-login btnekomn card_f_btn next_Tab"
@@ -269,7 +291,7 @@ Assign Shine
 <script>
     // Go Back
     document.getElementById('cancelButton').addEventListener('click', function() {
-        window.location.href = "{{ route('my-shine') }}";
+      window.location.href = "{{ route('my-shine') }}?tab=live-shine";
     });
     document.getElementById('order_invoice').addEventListener('change', function() {
         document.getElementById('invoicefilename').textContent = this.files[0].name;
@@ -327,6 +349,7 @@ function validateForm1(event) {
       success: function(response) {
         alert('Details updated successfully.');
         $('#saveButton1').prop('disabled', true);
+        location.reload();
       },
       error: function(xhr) {
         alert('Please upload pdf, jpg and png files while updating the details.');
@@ -386,6 +409,7 @@ function validateForm2(event) {
                 alert('Acknowledgment of Shine Completion updated successfully.');
                 // Optionally, you can disable the submit button here
                 $('#saveButton2').attr('disabled', true);
+                location.reload();
             },
             error: function(xhr) {
                 alert('Please upload valid files (pdf, jpg, png) while updating the details.');

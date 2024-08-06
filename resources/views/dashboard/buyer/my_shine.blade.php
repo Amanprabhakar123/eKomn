@@ -98,23 +98,32 @@ My Shine
                       @foreach($shineProducts as $product)
                           <tr>
                             <td>
-                                <span id="batchId-{{ $product->id }}">{{ $product->batch_id }}</span>
-                                <i class="fas fa-copy copy-icon" style="cursor: pointer; margin-left: 5px;" onclick="copyToClipboard('batchId-{{ $product->id }}')"></i>
+                              <span id="batchId-{{ $product->id }}">{{ $product->batch_id }}</span>
+                              <i class="fas fa-copy copy-icon" style="cursor: pointer; margin-left: 5px;" onclick="copyToClipboard('batchId-{{ $product->id }}', this)"></i>
+                              <span class="copy-message" style="display: none; margin-left: 5px; color: #FECA40;">Copied</span>
                             </td>
                             <td>
                                 <span id="requestNo-{{ $product->id }}">{{ $product->request_no }}</span>
-                                <i class="fas fa-copy copy-icon" style="cursor: pointer; margin-left: 5px;" onclick="copyToClipboard('requestNo-{{ $product->id }}')"></i>
+                                <i class="fas fa-copy copy-icon" style="cursor: pointer; margin-left: 5px;" onclick="copyToClipboard('requestNo-{{ $product->id }}', this)"></i>
+                                <span class="copy-message" style="display: none; margin-left: 5px; color: #FECA40;">Copied</span>
                             </td>
-                              <td>{{ $product->name }}</td>
-                              {{-- <td>{{ $product->platform }}</td> --}}
-                              <td>
-                                  <span id="url-{{ $product->id }}"><a href="{{ $product->url }}" target="_blank">{{ $product->url }}</a></span>
-                                  <i class="fas fa-copy copy-icon" style="cursor: pointer; margin-left: 5px;" onclick="copyToClipboard('url-{{ $product->id }}')"></i>
-                              </td>
-                              <td>
+                            <td class="product-name" data-original-name="{{ $product->name }}">
+                                <span id="name-{{ $product->id }}">{{ $product->name }}</span>
+                                <i class="fas fa-copy copy-icon" style="cursor: pointer; margin-left: 5px;" onclick="copyToClipboard('name-{{ $product->id }}', this)"></i>
+                                <span class="copy-message" style="display: none; margin-left: 5px; color: #FECA40;">Copied</span>
+                            </td>
+                            <td>
+                              <a target="_blank" href="{{ $product->url }}" id="url-{{ $product->id }}">Product Link</a>
+                              <i class="fas fa-copy copy-icon" style="cursor: pointer; margin-left: 5px;" onclick="copyToClipboard('url-{{ $product->id }}', this)"></i>
+                              <div class="copy-message" style="display: none; color: #FECA40;">Copied</div>
+                            </td>
+                            <td>
                                 <span id="productId-{{ $product->id }}">{{ $product->product_id }}</span>
-                                <i class="fas fa-copy copy-icon" style="cursor: pointer; margin-left: 5px;" onclick="copyToClipboard('productId-{{ $product->id }}')"></i>
-                              </td>
+                                <i class="fas fa-copy copy-icon" style="cursor: pointer; margin-left: 5px;" onclick="copyToClipboard('productId-{{ $product->id }}', this)"></i>
+                                <span class="copy-message" style="display: none; margin-left: 5px; color: #FECA40;">Copied</span>
+                            </td>
+                            
+
                               {{-- <td>{{ $product->seller_name }}</td> --}}
                               {{-- <td>{{ $product->search_term }}</td> --}}
                               <td>₹ {{ $product->amount }}</td>
@@ -215,9 +224,9 @@ My Shine
                       <th>Product URL/Link</th>
                       <th>Product ID/ASIN</th>
                       {{-- <th>Seller/Brand Name</th>
-                      <th>Product Search Term </th>
+                      <th>Product Search Term </th> --}}
                       <th>Product amount</th>
-                      <th>Feedback/Review Title</th>
+                      {{-- <th>Feedback/Review Title</th>
                       <th>Feedback/Review comment</th>
                       <th>Review Rating</th> --}}
                       <th>Status</th>
@@ -232,18 +241,39 @@ My Shine
                     @else
                     @foreach($assignedProducts as $product)
                     <tr>
-                      <td>{{ $product->batch_id }}</td>
-                      <td>{{ $product->request_no }}</td>
-                      <td>{{ $product->name }}</td>
+                      <td>
+                        <span id="batchId-{{ $product->id }}">{{ $product->batch_id }}</span>
+                        <i class="fas fa-copy copy-icon" style="cursor: pointer; margin-left: 5px;" onclick="copyToClipboard('batchId-{{ $product->id }}', this)"></i>
+                        <div class="copy-message" style="display: none; color: #FECA40;">Copied</div>
+                      </td>
+                      <td>
+                        <span id="requestNo-{{ $product->id }}">{{ $product->request_no }}</span>
+                        <i class="fas fa-copy copy-icon" style="cursor: pointer; margin-left: 5px;" onclick="copyToClipboard('requestNo-{{ $product->id }}', this)"></i>
+                        <div class="copy-message" style="display: none; color: #FECA40;">Copied</div>
+                      </td>
+                      <td class="product-name" data-original-name="{{ $product->name }}">
+                        <span id="name-{{ $product->id }}">{{ $product->name }}</span>
+                        <i class="fas fa-copy copy-icon" style="cursor: pointer; margin-left: 5px;" onclick="copyToClipboard('name-{{ $product->id }}', this)"></i>
+                        <div class="copy-message" style="display: none; color: #FECA40;">Copied</div>
+                      </td>
                       <td>{{ $product->platform }}</td>
-                      <td><a target="_blank" href="{{ $product->url }}">Product Link</a></td>
-                      <td>{{ $product->product_id }}</td>
-                      {{-- <td>{{ $product->seller_name }}</td>
-                      <td>{{ $product->search_term }}</td>
+                      <td>
+                        <a target="_blank" href="{{ $product->url }}" id="url-{{ $product->id }}">Product Link</a>
+                        <i class="fas fa-copy copy-icon" style="cursor: pointer; margin-left: 5px;" onclick="copyToClipboard('url-{{ $product->id }}', this)"></i>
+                        <div class="copy-message" style="display: none; color: #FECA40;">Copied</div>
+                      </td>
+                      <td>
+                        <span id="productId-{{ $product->id }}">{{ $product->product_id }}</span>
+                        <i class="fas fa-copy copy-icon" style="cursor: pointer; margin-left: 5px;" onclick="copyToClipboard('productId-{{ $product->id }}', this)"></i>
+                        <div class="copy-message" style="display: none; color: #FECA40;">Copied</div>
+                      </td>
+                  
+                      {{-- <td>{{ $product->seller_name }}</td> --}}
+                      {{-- <td>{{ $product->search_term }}</td> --}}
                       <td>₹ {{ $product->amount }}</td>
-                      <td>{{ $product->feedback_title }}</td>
-                      <td>{{ $product->feedback_comment }}</td>
-                      <td class="star-rating">
+                      {{-- <td>{{ $product->feedback_title }}</td> --}}
+                      {{-- <td>{{ $product->feedback_comment }}</td> --}}
+                      {{-- <td class="star-rating">
                         @for ($i = 1; $i <= 5; $i++)
                             @if ($i <= $product->review_rating)
                                 <i class="fas fa-star"></i> 
@@ -1355,420 +1385,76 @@ My Shine
 @section('scripts')
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-  function copyToClipboard(elementId) {
-      var text = document.getElementById(elementId).innerText || document.getElementById(elementId).querySelector('a').href;
+  // Script for copy the field
+  function copyToClipboard(elementId, iconElement) {
+      var element = document.getElementById(elementId);
+      var parentElement = element.closest('.product-name');
+      var text;
+  
+      if (parentElement && parentElement.hasAttribute('data-original-name')) {
+          text = parentElement.getAttribute('data-original-name');
+      } else {
+          if (element.tagName === 'A') {
+              text = element.href;
+          } else {
+              text = element.innerText || element.textContent;
+          }
+      }
+  
       var textArea = document.createElement("textarea");
       textArea.value = text;
       document.body.appendChild(textArea);
       textArea.select();
       document.execCommand("copy");
       document.body.removeChild(textArea);
-      alert("Copied: " + text);
+  
+      // Show the copied message
+      var copyMessage = iconElement.nextElementSibling;
+      copyMessage.style.display = 'inline';
+      setTimeout(function() {
+          copyMessage.style.display = 'none';
+      }, 2000); // Hide after 2 seconds
   }
-</script>
-<script>
-    document.addEventListener("DOMContentLoaded", () => {
-        const rowsPerPage = document.getElementById("rowsPerPage");
-        const rowInfo = document.getElementById("rowInfo");
-        const pagination = document.getElementById("pagination");
-        const prevPage = document.getElementById("prevPage");
-        const nextPage = document.getElementById("nextPage");
-        const dataContainer = document.getElementById("dataContainer");
-        let currentPage = 1;
-        let rows = parseInt(rowsPerPage.value, 10);
-        let totalRows = 0;
+  
+  // Script for product Name shorting
+  function truncateWords(element, wordLimit) {
+      var text = element.textContent.trim();
+      var words = text.split(' ');
+      if (words.length > wordLimit) {
+          element.textContent = words.slice(0, wordLimit).join(' ') + '...';
+      }
+  }
 
-        // Event listener for the search input field
-        const searchQuery = document.getElementById("searchQuery");
-        searchQuery.addEventListener("keydown", (e) => {
-            if (e.key === "Enter") {
-                fetchData();
-            }
-        });
-
-        // Event listener for clicking outside the search input field
-        searchQuery.addEventListener("blur", (e) => {
-            fetchData();
-        });
-
-        const sortByStatus = document.getElementById("sort_by_status");
-        sortByStatus.addEventListener("change", () => {
-            fetchData();
-        });
-
-
-        const sortField = ""; // Set the sort field here (e.g. "sku", "stock", "selling_price")
-        const sortOrder = ""; // Set the sort order here (e.g. "asc", "desc")
-        // const selling_price_sort = document.getElementById("selling_price_sort");
-        // selling_price_sort.addEventListener("click", () => {
-        //     alert('asdd');
-        //     sortField = "price_after_tax";
-        //     sortOrder = (sortOrder === "asc") ? "desc" : "asc";
-        //     // alert(sortOrder);
-        //     fetchData();
-        // });
-        // Function to fetch data from the server
-        function fetchData() {
-            // Make an API request to fetch inventory data
-            let apiUrl = `product/inventory?per_page=${rows}&page=${currentPage}`;
-
-            if (sortField && sortOrder) {
-                apiUrl += `&sort_field=${sortField}&sort_order=${sortOrder}`;
-            }
-
-            if (searchQuery) {
-                apiUrl += `&query=${searchQuery.value}`;
-            }
-
-            if (sortByStatus) {
-                apiUrl += `&sort_by_status=${sortByStatus.value}`;
-            }
-
-            ApiRequest(apiUrl, 'GET')
-                .then(response => {
-                    const data = (response.data);
-                    if (data.length === 0) {
-                        dataContainer.innerHTML = `<tr><td colspan="10" class="text-center">No data found</td></tr>`;
-                    } else {
-                        response = (response.meta.pagination);
-                        totalRows = response.total;
-                        updatePagination();
-                        displayData(data);
-                    }
-                })
-                .catch(error => {
-                    console.error('Error fetching data:', error);
-                });
-        }
-
-        // Function to update the pagination UI
-        function updatePagination() {
-            const totalPages = Math.ceil(totalRows / rows);
-            pagination.innerHTML = "";
-            let pageList = "";
-            if (totalPages <= 5) {
-                for (let i = 1; i <= totalPages; i++) {
-                    pageList += `<li><a href="#" class="${i === currentPage ? "active" : ""}" data-page="${i}">${i}</a></li>`;
-                }
-            } else {
-                if (currentPage <= 3) {
-                    for (let i = 1; i <= 4; i++) {
-                        pageList += `<li><a href="#" class="${i === currentPage ? "active" : ""}" data-page="${i}">${i}</a></li>`;
-                    }
-                    pageList += `<li>...</li>`;
-                    pageList += `<li><a href="#" data-page="${totalPages}">${totalPages}</a></li>`;
-                } else if (currentPage >= totalPages - 2) {
-                    pageList += `<li><a href="#" data-page="1">1</a></li>`;
-                    pageList += `<li>...</li>`;
-                    for (let i = totalPages - 3; i <= totalPages; i++) {
-                        pageList += `<li><a href="#" class="${i === currentPage ? "active" : ""}" data-page="${i}">${i}</a></li>`;
-                    }
-                } else {
-                    pageList += `<li><a href="#" data-page="1">1</a></li>`;
-                    pageList += `<li>...</li>`;
-                    for (let i = currentPage - 1; i <= currentPage + 1; i++) {
-                        pageList += `<li><a href="#" class="${i === currentPage ? "active" : ""}" data-page="${i}">${i}</a></li>`;
-                    }
-                    pageList += `<li>...</li>`;
-                    pageList += `<li><a href="#" data-page="${totalPages}">${totalPages}</a></li>`;
-                }
-            }
-            pagination.innerHTML = pageList;
-            updateRowInfo();
-            prevPage.disabled = currentPage === 1;
-            nextPage.disabled = currentPage === totalPages;
-        }
-
-        // Function to update the row information
-        function updateRowInfo() {
-            const startRow = (currentPage - 1) * rows + 1;
-            const endRow = Math.min(currentPage * rows, totalRows);
-            rowInfo.textContent = `Showing ${startRow} to ${endRow} of ${totalRows}`;
-        }
-
-        // Function to display the inventory data in the table
-        function displayData(items) {
-            dataContainer.innerHTML = items.map(generateTableRow).join("");
-        }
-
-        // Event listener for the "rowsPerPage" select element
-        rowsPerPage.addEventListener("change", (e) => {
-            rows = parseInt(e.target.value, 10);
-            currentPage = 1;
-            fetchData();
-        });
-
-        // Event listener for the pagination links
-        pagination.addEventListener("click", (e) => {
-            if (e.target.tagName === "A") {
-                currentPage = parseInt(e.target.dataset.page, 10);
-                fetchData();
-            }
-        });
-
-        // Event listener for the "prevPage" button
-        prevPage.addEventListener("click", () => {
-            if (currentPage > 1) {
-                currentPage--;
-                fetchData();
-            }
-        });
-
-        // Event listener for the "nextPage" button
-        nextPage.addEventListener("click", () => {
-            const totalPages = Math.ceil(totalRows / rows);
-            if (currentPage < totalPages) {
-                currentPage++;
-                fetchData();
-            }
-        });
-
-        // Initial fetch of data
-        fetchData();
-
+  document.addEventListener('DOMContentLoaded', function() {
+    var productNames = document.querySelectorAll('.product-name span');
+    productNames.forEach(function(element) {
+        truncateWords(element, 3);
     });
+  });
+  
 
-    /**
-     * Generates a table row HTML markup for a given item.
-     *
-     * @param {Object} item - The item object containing the details.
-     * @returns {string} - The HTML markup for the table row.
-     */
-    function generateTableRow(item) {
-        let stock = allowEditable(item)
-        let availabilityStatus = false;
-        if (item.product_category == 'Unknown') {
-            availabilityStatus = true;
-        }
-        return `
-        <tr>
-            <td>
-                <div class="productImg_t">
-                    <img src="${item.product_image}" alt="Product Image">
-                </div>
-            </td>
-            <td>
-                <div class="productTitle_t">
-                    ${item.title}
-                </div>
-            </td>
-            <td>
-                <div class="sku_t">${item.sku}</div>
-            </td>
-            <td>
-                ${item.product_id}
-            </td>
-            <td>
-                <input type="text" class="stock_t" value="${item.stock}" onfocusout="handleInput('${item.id}', '${item.product_id}', 1, this)">
-            </td>
-            <td>
-                <div class="sell_t"><i class="fas fa-rupee-sign"></i> ${item.selling_price}</div>
-            </td>
-            <td>
-                <div>${item.product_category}</div>
-            </td>
-            <td>
-                <div>${item.availability_status}</div>
-            </td>
-            <td>
-            <select class="changeStatus_t form-select" onchange="handleInput('${item.id}', '${item.product_id}', 2, this)" ${item.allow_editable == true ? 'disabled' : '' }>
-               ${stock}
-               </select>
-            </td>
-            <td>
-                <a class="nbtn btn-link btn-sm" href="${item.editInventory}" target="_blank">Edit</a>
-            </td>
-        </tr>
-    `;
-
-        function allowEditable(item) {
-            if (item.allow_editable) {
-
-                return `
-                    <option value="1" ${item.status === "Active" ? "selected" : ""}>Active</option>
-                    <option value="2" ${item.status === "Inactive" ? "selected" : ""}>Inactive</option>
-                    <option value="3" ${item.status === "Out of Stock" ? "selected" : ""}>Out of Stock</option>
-                    <option value="4" ${item.status === "Draft" ? "selected" : ""}>Draft</option>
-                `;
-            } else {
-                // console.log(item.allow_editable);
-                return `
-            <option value="1" ${item.status === "Active" ? "selected" : ""}>Active</option>
-            <option value="2" ${item.status === "Inactive" ? "selected" : ""}>Inactive</option>
-            <option value="3" ${item.status === "Out of Stock" ? "selected" : ""}>Out of Stock</option>
-        `;
-            }
-
-
+  document.addEventListener('DOMContentLoaded', function() {
+    function activateTab(tabId) {
+        var tabTrigger = document.querySelector(`a[data-bs-target="#${tabId}"]`);
+        if (tabTrigger) {
+            var tab = new bootstrap.Tab(tabTrigger);
+            tab.show();
         }
     }
 
-
-
-    function handleInput(itemId, productId, type, element) {
-        if (type === 1) {
-            updateStock(itemId, productId, element.value);
-        } else if (type === 2) {
-            updateStatus(itemId, productId, element.value);
-        }
+    var urlParams = new URLSearchParams(window.location.search);
+    var tabId = urlParams.get('tab');
+    
+    if (tabId) {
+        activateTab(tabId);
+    } else {
+        // Optionally handle the default case if no query parameter is provided
+        activateTab('shine'); // Default to 'shine' if no tab parameter is present
     }
-    /**
-     * Updates the stock of a product.
-     *
-     * @param {number} productId - The ID of the product.
-     */
-    function updateStock(itemId, productId, newStock) {
-        // Make an API request to update the stock of the product
-        ApiRequest(`product/updateStock/${itemId}`, 'PATCH', {
-                stock: newStock,
-                product_id: productId
-            })
-            .then(response => {
-            if (response.data.statusCode == 200) {
-            Swal.fire({
-                title: "Good job!",
-                text: response.data.message,
-                icon: "success",
-                didOpen: () => {
-                  // Apply inline CSS to the title
-                  const title = Swal.getTitle();
-                  title.style.color = 'red';
-                  title.style.fontSize = '20px';
-
-                  // Apply inline CSS to the content
-                  const content = Swal.getHtmlContainer();
-
-                  // Apply inline CSS to the confirm button
-                  const confirmButton = Swal.getConfirmButton();
-                  confirmButton.style.backgroundColor = '#feca40';
-                  confirmButton.style.color = 'white';
-                }
-            }).then(() => {
-                // Redirect to the inventory page
-                window.location.href = "{{ route('my.inventory') }}";
-            })
-                    
-                } else if (response.data.statusCode == 422) {
-                    Swal.fire({
-                        icon: "error",
-                        title: "Oops...",
-                        text: response.data.message,
-                    });
-                }
-            })
-            .catch(error => {
-                console.error('Error updating stock:', error);
-            });
-    }
-
-    /**
-     * Updates the status of a product.
-     *
-     * @param {number} productId - The ID of the product.
-     */
-    function updateStatus(itemId, productId, newStatus) {
-        Swal.fire({
-            title: "Do you want to save the changes status?",
-            showCancelButton: true,
-            confirmButtonText: "Save",
-            denyButtonText: `Don't save`,
-            didOpen: () => {
-                const title = Swal.getTitle();
-                title.style.fontSize = '25px';
-                // Apply inline CSS to the content
-                const content = Swal.getHtmlContainer();
-                // Apply inline CSS to the confirm button
-                const confirmButton = Swal.getConfirmButton();
-                confirmButton.style.backgroundColor = '#feca40';
-                confirmButton.style.color = 'white';
-            }
-        }).then((result) => {
-            /* Read more about isConfirmed, isDenied below */
-            if (result.isConfirmed) {
-                // Make an API request to update the status of the product
-                ApiRequest(`product/updateStatus/${itemId}`, 'PATCH', {
-                        status: newStatus,
-                        product_id: productId
-                    })
-                    .then(response => {
-                        Swal.fire({
-                            title: "Good job!",
-                            text: response.data.message,
-                            icon: "success",
-                            didOpen: () => {
-                            // Apply inline CSS to the title
-                            const title = Swal.getTitle();
-                            title.style.color = 'red';
-                            title.style.fontSize = '20px';
-
-                            // Apply inline CSS to the content
-                            const content = Swal.getHtmlContainer();
-
-                            // Apply inline CSS to the confirm button
-                            const confirmButton = Swal.getConfirmButton();
-                            confirmButton.style.backgroundColor = '#feca40';
-                            confirmButton.style.color = 'white';
-                            }
-                        }).then(() => {
-                            // Redirect to the inventory page
-                            window.location.href = "{{ route('my.inventory') }}";
-                        })
-                        
-                    })
-                    .catch(error => {
-                        console.error('Error updating status:', error);
-                    });
-
-            } else if (result.isDenied) {
-                Swal.fire("The status is not updated.", "", "info");
-            }
-        });
-
-    }
-</script>
-
-<script>
-document.addEventListener("DOMContentLoaded", function() {
-  const tableBody = document.getElementById("dataShine");
-
-  function fetchData() {
-    // Replace 'http://your-api-endpoint' with your actual API endpoint URL
-    fetch('http://your-api-endpoint')
-      .then(response => response.json())
-      .then(data => {
-        if (data.length === 0) {
-          tableBody.innerHTML = `<tr><td colspan="12" class="text-center">No data found</td></tr>`;
-        } else {
-          let tableRows = "";
-          for (const item of data) {
-            tableRows += `
-              <tr>
-                <td>${item.product_name}</td>
-                <td>${item.platform}</td>
-                <td><a href="${item.product_url}" target="_blank">${item.product_url}</a></td>
-                <td>${item.product_id_asin}</td>
-                <td>${item.seller_brand_name}</td>
-                <td>${item.product_search_term}</td>
-                <td>${item.product_amount}</td>
-                <td>${item.feedback_review_title}</td>
-                <td>${item.feedback_review_comment}</td>
-                <td>${item.review_rating}</td>
-                <td>${item.status}</td>
-                <td></td>
-              </tr>
-            `;
-            
-          }
-          tableBody.innerHTML = tableRows;
-        }
-      })
-      .catch(error => {
-        console.error("Error fetching data:", error);
-      });
-  }
-
-  fetchData();
 });
 </script>
+  
+  
+  
 
 @endsection
