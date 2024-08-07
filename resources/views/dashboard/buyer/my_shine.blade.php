@@ -109,18 +109,18 @@ My Shine
                             </td>
                             <td class="product-name" data-original-name="{{ $product->name }}">
                                 <span id="name-{{ $product->id }}">{{ $product->name }}</span>
-                                <i class="fas fa-copy copy-icon" style="cursor: pointer; margin-left: 5px;" onclick="copyToClipboard('name-{{ $product->id }}', this)"></i>
-                                <span class="copy-message" style="display: none; margin-left: 5px; color: #FECA40;">Copied</span>
+                                {{-- <i class="fas fa-copy copy-icon" style="cursor: pointer; margin-left: 5px;" onclick="copyToClipboard('name-{{ $product->id }}', this)"></i>
+                                <span class="copy-message" style="display: none; margin-left: 5px; color: #FECA40;">Copied</span> --}}
                             </td>
                             <td>
                               <a target="_blank" href="{{ $product->url }}" id="url-{{ $product->id }}">Product Link</a>
-                              <i class="fas fa-copy copy-icon" style="cursor: pointer; margin-left: 5px;" onclick="copyToClipboard('url-{{ $product->id }}', this)"></i>
-                              <div class="copy-message" style="display: none; color: #FECA40;">Copied</div>
+                              {{-- <i class="fas fa-copy copy-icon" style="cursor: pointer; margin-left: 5px;" onclick="copyToClipboard('url-{{ $product->id }}', this)"></i>
+                              <div class="copy-message" style="display: none; color: #FECA40;">Copied</div> --}}
                             </td>
                             <td>
                                 <span id="productId-{{ $product->id }}">{{ $product->product_id }}</span>
-                                <i class="fas fa-copy copy-icon" style="cursor: pointer; margin-left: 5px;" onclick="copyToClipboard('productId-{{ $product->id }}', this)"></i>
-                                <span class="copy-message" style="display: none; margin-left: 5px; color: #FECA40;">Copied</span>
+                                {{-- <i class="fas fa-copy copy-icon" style="cursor: pointer; margin-left: 5px;" onclick="copyToClipboard('productId-{{ $product->id }}', this)"></i>
+                                <span class="copy-message" style="display: none; margin-left: 5px; color: #FECA40;">Copied</span> --}}
                             </td>
                             
 
@@ -158,7 +158,7 @@ My Shine
                                 @endif
                               </td>
                               <td>      
-                                <a href="{{ route('shine-status', $product->id) }}" class="btn btnekomn btn-sm">View Details</a>
+                                <a href="{{ route('shine-status', $product->id) }}" class="btn btnekomn btn-sm {{ $product->status == 3 || $product->status == 5 ? 'blink' : '' }}">View Details</a>
                               </td>
                           </tr>
                       @endforeach
@@ -253,19 +253,19 @@ My Shine
                       </td>
                       <td class="product-name" data-original-name="{{ $product->name }}">
                         <span id="name-{{ $product->id }}">{{ $product->name }}</span>
-                        <i class="fas fa-copy copy-icon" style="cursor: pointer; margin-left: 5px;" onclick="copyToClipboard('name-{{ $product->id }}', this)"></i>
-                        <div class="copy-message" style="display: none; color: #FECA40;">Copied</div>
+                        {{-- <i class="fas fa-copy copy-icon" style="cursor: pointer; margin-left: 5px;" onclick="copyToClipboard('name-{{ $product->id }}', this)"></i>
+                        <div class="copy-message" style="display: none; color: #FECA40;">Copied</div> --}}
                       </td>
                       <td>{{ $product->platform }}</td>
                       <td>
                         <a target="_blank" href="{{ $product->url }}" id="url-{{ $product->id }}">Product Link</a>
-                        <i class="fas fa-copy copy-icon" style="cursor: pointer; margin-left: 5px;" onclick="copyToClipboard('url-{{ $product->id }}', this)"></i>
-                        <div class="copy-message" style="display: none; color: #FECA40;">Copied</div>
+                        {{-- <i class="fas fa-copy copy-icon" style="cursor: pointer; margin-left: 5px;" onclick="copyToClipboard('url-{{ $product->id }}', this)"></i>
+                        <div class="copy-message" style="display: none; color: #FECA40;">Copied</div> --}}
                       </td>
                       <td>
                         <span id="productId-{{ $product->id }}">{{ $product->product_id }}</span>
-                        <i class="fas fa-copy copy-icon" style="cursor: pointer; margin-left: 5px;" onclick="copyToClipboard('productId-{{ $product->id }}', this)"></i>
-                        <div class="copy-message" style="display: none; color: #FECA40;">Copied</div>
+                        {{-- <i class="fas fa-copy copy-icon" style="cursor: pointer; margin-left: 5px;" onclick="copyToClipboard('productId-{{ $product->id }}', this)"></i>
+                        <div class="copy-message" style="display: none; color: #FECA40;">Copied</div> --}}
                       </td>
                   
                       {{-- <td>{{ $product->seller_name }}</td> --}}
@@ -302,7 +302,7 @@ My Shine
                         @endif
                       </td>
                       <td>
-                        <a href="{{ route('complete-shine', $product->id) }}" class="btn btnekomn btn-sm">Complete Shine</a>
+                        <a href="{{ route('complete-shine', $product->id) }}" class="btn btnekomn btn-sm {{ $product->status == 2 || $product->status == 4 ? 'blink' : '' }}">Complete Shine</a>
                       </td>
                     </tr>
                     @endforeach

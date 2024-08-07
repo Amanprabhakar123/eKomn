@@ -148,7 +148,7 @@ Assign Shine
                 </div>
                 <div class="col-sm-12 col-md-4">
                   <div class="ek_group">
-                    <label class="eklabel req"><span>Upload Order Invoice:</span></label>
+                    <label class="eklabel req"><span>Upload Order Invoice/ Order Confirmation Screenshot:</span></label>
                     <div class="d-flex align-items-center justify-content-between ms-2">
                       <input type="file" id="orderInvoice" style="display: none;" onchange="updateFileNameAndDisableButton(this, 'invoiceButton')" />
                       <button type="button" class="btn btn-light border" id="invoiceButton" onclick="document.getElementById('orderInvoice').click();" {{ $productReview->order_invoice ? 'disabled' : '' }}>
@@ -273,7 +273,7 @@ Assign Shine
                     <i class="fas fa-arrow-left me-3 fs-13"></i>Back
                 </button>
                 <button type="submit" id="saveButton2" onclick="validateForm2(event)" class="btn btn-login btnekomn card_f_btn next_Tab"
-                  {{ $productReview->feedback_comment ? 'disabled' : '' }}>
+                  {{ $productReview->feedback_comment && $productReview->shine_product_id ? 'disabled' : '' }} >
                   Submit
                 </button>
             </div>

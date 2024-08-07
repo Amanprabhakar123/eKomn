@@ -21,7 +21,7 @@ class CreateShineProductsTable extends Migration
             $table->string('search_term');
             $table->decimal('amount', 10, 2);
             $table->string('feedback_title');
-            $table->string('feedback_comment');
+            $table->text('feedback_comment');
             $table->integer('review_rating');
             $table->integer('status');
             $table->timestamps();

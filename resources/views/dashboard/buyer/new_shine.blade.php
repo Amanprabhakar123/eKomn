@@ -180,6 +180,7 @@ New Shine
                                 <span class="star" data-value="5">&#9733;</span>
                               </div>
                               <input type="hidden" class="review_rating" name="review_rating"[] id="review_rating" value="">
+                              <h6 class="text-danger hide error-message">Error message</h6>
                             </div>
                           </div>
                         </div>
@@ -325,6 +326,7 @@ New Shine
                                 <span class="star" data-value="5">&#9733;</span>
                               </div>
                               <input type="hidden" class="review_rating" name="review_rating[]" id="review_rating" value="">
+                              <h6 class="text-danger hide error-message">Error message</h6>
                             </div>
                           </div>
                         </div>
@@ -468,6 +470,7 @@ New Shine
                                 <span class="star" data-value="5">&#9733;</span>
                               </div>
                               <input type="hidden" class="review_rating" name="review_rating[]" id="review_rating" value="">
+                              <h6 class="text-danger hide error-message">Error message</h6>
                             </div>
                           </div>
                         </div>
@@ -611,6 +614,7 @@ New Shine
                                 <span class="star" data-value="5">&#9733;</span>
                               </div>
                               <input type="hidden" class="review_rating" name="review_rating[]" id="review_rating" value="">
+                              <h6 class="text-danger hide error-message">Error message</h6>
                             </div>
                           </div>
                         </div>
@@ -754,6 +758,7 @@ New Shine
                                 <span class="star" data-value="5">&#9733;</span>
                               </div>
                               <input type="hidden" class="review_rating" name="review_rating[]" id="review_rating" value="">
+                              <h6 class="text-danger hide error-message">Error message</h6>
                             </div>
                           </div>
                         </div>
@@ -1053,7 +1058,7 @@ $(document).ready(function() {
       }
 
       const amount = $(`#request_${formNumber} #amount`).val().trim();
-      if (amount === "" || isNaN(amount)) {
+      if (amount === "" || isNaN(amount) || parseFloat(amount) <= 0) {
           showError(`request_${formNumber} #amount`, "Valid Product Amount is required.");
           isValid = false;
       }
@@ -1069,6 +1074,16 @@ $(document).ready(function() {
           showError(`request_${formNumber} #review_rating`, "Review Rating is required.");
           isValid = false;
       }
+      
+      const feedbackComment = $(`#request_${formNumber} #feedback_comment`).val();
+          if (feedbackComment === "") {
+          showError(`request_${formNumber} #feedback_comment`, "Feedback Comment is required.");
+          isValid = false;
+      } else if (feedbackComment.length > 300) {
+          showError(`request_${formNumber} #feedback_comment`, "Feedback Comment cannot exceed 300 characters.");
+          isValid = false;
+      }
+
 
       return isValid;
   }
