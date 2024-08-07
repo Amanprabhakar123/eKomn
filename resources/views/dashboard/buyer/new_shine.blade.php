@@ -1021,9 +1021,26 @@ $(document).ready(function() {
   function validateForm(formNumber) {
       let isValid = true;
 
+      // Regular expressions for validation
+      const numberRegex = /^[\d\s\+\-()]+$/; // Contains numbers
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Simple email pattern
+      const urlRegex = /^(https?:\/\/[^\s$.?#].[^\s]*)$/i; // Simple URL pattern
+
       const productName = $(`#request_${formNumber} #product_name`).val().trim();
       if (productName === "") {
           showError(`request_${formNumber} #product_name`, "Product Name is required.");
+          isValid = false;
+      } else if (productName.length > 300) {
+          showError(`request_${formNumber} #product_name`, "Product Name cannot exceed 300 characters.");
+          isValid = false;
+      } else if (numberRegex.test(productName)) {
+          showError(`request_${formNumber} #product_name`, "Invailid Input.");
+          isValid = false;
+      } else if (emailRegex.test(productName)) {
+          showError(`request_${formNumber} #product_name`, "Product Name cannot contain an email address.");
+          isValid = false;
+      } else if (urlRegex.test(productName)) {
+          showError(`request_${formNumber} #product_name`, "Product Name cannot contain a URL.");
           isValid = false;
       }
 
@@ -1043,17 +1060,53 @@ $(document).ready(function() {
       if (productId === "") {
           showError(`request_${formNumber} #product_id`, "Product ID/ASIN is required.");
           isValid = false;
+      } else if (productId.length > 30) {
+          showError(`request_${formNumber} #product_id`, "Product ID/ASIN cannot exceed 30 characters.");
+          isValid = false;
+      } else if (numberRegex.test(productId)) {
+          showError(`request_${formNumber} #product_id`, "Invailid Input.");
+          isValid = false;
+      } else if (emailRegex.test(productId)) {
+          showError(`request_${formNumber} #product_id`, "Product ID/ASIN cannot contain an email address.");
+          isValid = false;
+      } else if (urlRegex.test(productId)) {
+          showError(`request_${formNumber} #product_id`, "Product ID/ASIN cannot contain a URL.");
+          isValid = false;
       }
 
       const sellerName = $(`#request_${formNumber} #seller_name`).val().trim();
       if (sellerName === "") {
           showError(`request_${formNumber} #seller_name`, "Seller/Brand Name is required.");
           isValid = false;
+      } else if (sellerName.length > 20) {
+          showError(`request_${formNumber} #seller_name`, "Seller/Brand Name cannot exceed 20 characters.");
+          isValid = false;
+      } else if (numberRegex.test(sellerName)) {
+          showError(`request_${formNumber} #seller_name`, "Invailid Input.");
+          isValid = false;
+      } else if (emailRegex.test(sellerName)) {
+          showError(`request_${formNumber} #seller_name`, "Seller/Brand Name cannot contain an email address.");
+          isValid = false;
+      } else if (urlRegex.test(sellerName)) {
+          showError(`request_${formNumber} #seller_name`, "Seller/Brand Name cannot contain a URL.");
+          isValid = false;
       }
 
       const searchTerm = $(`#request_${formNumber} #search_term`).val().trim();
       if (searchTerm === "") {
           showError(`request_${formNumber} #search_term`, "Product Search Term is required.");
+          isValid = false;
+      } else if (searchTerm.length > 200) {
+          showError(`request_${formNumber} #search_term`, "Product Search Term cannot exceed 200 characters.");
+          isValid = false;
+      } else if (numberRegex.test(searchTerm)) {
+          showError(`request_${formNumber} #search_term`, "Invailid Input.");
+          isValid = false;
+      } else if (emailRegex.test(searchTerm)) {
+          showError(`request_${formNumber} #search_term`, "Product Search Term cannot contain an email address.");
+          isValid = false;
+      } else if (urlRegex.test(searchTerm)) {
+          showError(`request_${formNumber} #search_term`, "Product Search Term cannot contain a URL.");
           isValid = false;
       }
 
@@ -1066,6 +1119,18 @@ $(document).ready(function() {
       const feedbackTitle = $(`#request_${formNumber} #feedback_title`).val().trim();
       if (feedbackTitle === "") {
           showError(`request_${formNumber} #feedback_title`, "Feedback/Review Title is required.");
+          isValid = false;
+      } else if (feedbackTitle.length > 50) {
+          showError(`request_${formNumber} #feedback_title`, "Feedback/Review cannot exceed 50 characters.");
+          isValid = false;
+      } else if (numberRegex.test(feedbackTitle)) {
+          showError(`request_${formNumber} #feedback_title`, "Invailid Input.");
+          isValid = false;
+      } else if (emailRegex.test(feedbackTitle)) {
+          showError(`request_${formNumber} #feedback_title`, "Feedback/Review cannot contain an email address.");
+          isValid = false;
+      } else if (urlRegex.test(feedbackTitle)) {
+          showError(`request_${formNumber} #feedback_title`, "Feedback/Review cannot contain a URL.");
           isValid = false;
       }
 
@@ -1082,8 +1147,16 @@ $(document).ready(function() {
       } else if (feedbackComment.length > 300) {
           showError(`request_${formNumber} #feedback_comment`, "Feedback Comment cannot exceed 300 characters.");
           isValid = false;
+      } else if (numberRegex.test(feedbackComment)) {
+          showError(`request_${formNumber} #feedback_comment`, "Invailid Input.");
+          isValid = false;
+      } else if (emailRegex.test(feedbackComment)) {
+          showError(`request_${formNumber} #feedback_comment`, "Feedback Comment cannot contain an email address.");
+          isValid = false;
+      } else if (urlRegex.test(feedbackComment)) {
+          showError(`request_${formNumber} #feedback_comment`, "Feedback Comment cannot contain a URL.");
+          isValid = false;
       }
-
 
       return isValid;
   }
