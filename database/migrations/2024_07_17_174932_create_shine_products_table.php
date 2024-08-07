@@ -11,6 +11,7 @@ class CreateShineProductsTable extends Migration
         Schema::create('shine_products', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('assigner_id')->nullable();
             $table->string('batch_id');
             $table->string('request_no');
             $table->string('name');
@@ -25,10 +26,10 @@ class CreateShineProductsTable extends Migration
             $table->integer('review_rating');
             $table->integer('status');
             $table->timestamps();
-
             
-            // Foreign key constraint (optional, assuming you have a 'users' table)
+            // Foreign key constraints
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('assigner_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 
