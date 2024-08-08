@@ -42,13 +42,14 @@ My Shine
               </div>
               <div class="tableTop pt-3">
                 <input type="text" class="form-control w_300_f searchicon"
-                  placeholder="Search with Product Title, SKU, Product ID">
+                  placeholder="Search with Product Name, Batch ID, Request No, Product ID/ASIN" id="searchInput">
                 <div class="filter">
                   <div class="ek_group m-0">
                     <label class="eklabel w_50_f">Sort by:</label>
                     <div class="ek_f_input">
                       <select class="form-select" id="sort_by_status">
-                        <option value="0" selected>Draft</option>
+                        <option value="NA" selected>Select</option>
+                        <option value="0">Draft</option>
                         <option value="1">Pending</option>
                         <option value="2">Inprogress</option>
                         <option value="3">Order Placed</option>
@@ -62,7 +63,7 @@ My Shine
                 </div>
               </div>
               <div class="table-responsive tres_border">
-                <table class="normalTable tableSorting whitespace">
+                <table class="normalTable tableSorting whitespace" id="productTable">
                   <thead>
                     <tr>
                       <th>Batch ID
@@ -96,7 +97,7 @@ My Shine
                           </tr>
                       @else
                       @foreach($shineProducts->reverse() as $product)
-                          <tr>
+                          <tr data-status="{{ $product->status }}">
                             <td>
                               <span id="batchId-{{ $product->id }}">{{ $product->batch_id }}</span>
                               <i class="fas fa-copy copy-icon" style="cursor: pointer; margin-left: 5px;" onclick="copyToClipboard('batchId-{{ $product->id }}', this)"></i>
@@ -176,8 +177,8 @@ My Shine
                 <div class="row_select jumper">Go to
                   <select id="rowsPerPage">
                     <option value="10">10</option>
-                    <option value="50">50</option>
-                    <option selected value="100">100</option>
+                    <option selected value="50">50</option>
+                    <option value="100">100</option>
                     <option value="200">200</option>
                   </select>
                 </div>
@@ -186,27 +187,28 @@ My Shine
             <div class="tab-pane fade" id="live-shine" role="tabpanel" aria-labelledby="live-shine-tab" tabindex="0">
               <div class="tableTop">
                 <input type="text" class="form-control w_300_f searchicon"
-                  placeholder="Search with Product Title, SKU, Product ID">
+                  placeholder="Search with Product Name, Batch ID, Request No, Product ID/ASIN" id="searchInputassigned">
                 <div class="filter">
                   <div class="ek_group m-0">
                     <label class="eklabel w_50_f">Sort by:</label>
                     <div class="ek_f_input">
-                      <select class="form-select">
-                        <option value="" selected>Draft</option>
-                        <option value="">Pending</option>
-                        <option value="">Inprogress</option>
-                        <option value="">Order Placed</option>
-                        <option value="">Order Confirm</option>
-                        <option value="">Review Submited</option>
-                        <option value="">Complete</option>
-                        <option value="">Cancelled</option>
+                      <select class="form-select" id="sort_by_statusassigned">
+                        <option value="NA" selected>Select</option>
+                        <option value="0">Draft</option>
+                        <option value="1">Pending</option>
+                        <option value="2">Inprogress</option>
+                        <option value="3">Order Placed</option>
+                        <option value="4">Order Confirm</option>
+                        <option value="5">Review Submited</option>
+                        <option value="6">Complete</option>
+                        <option value="7">Cancelled</option>
                       </select>
                     </div>
                   </div>
                 </div>
               </div>
               <div class="table-responsive tres_border">
-                <table class="normalTable tableSorting whitespace">
+                <table class="normalTable tableSorting whitespace" id="productTableassigned">
                   <thead>
                     <tr>
                       <th>Batch ID
@@ -233,14 +235,14 @@ My Shine
                       <th>Action</th>
                     </tr>
                   </thead>
-                  <tbody>
+                  <tbody id="dataShineassigned">
                     @if($assignedProducts->isEmpty())
                         <tr>
                             <td colspan="9" style="text-align: center;">Not Assigned Shine Yet, Add New Shine First...</td>
                         </tr>
                     @else
                     @foreach($assignedProducts->reverse() as $product)
-                    <tr>
+                    <tr data-status-assigned="{{ $product->status }}">
                       <td>
                         <span id="batchId-{{ $product->id }}">{{ $product->batch_id }}</span>
                         <i class="fas fa-copy copy-icon" style="cursor: pointer; margin-left: 5px;" onclick="copyToClipboard('batchId-{{ $product->id }}', this)"></i>
@@ -311,17 +313,17 @@ My Shine
                 </table>
               </div>
               <div class="ek_pagination">
-                <span class="row_select rowcount" id="rowInfo"></span>
+                <span class="row_select rowcount" id="rowInfoassigned"></span>
                 <div class="pager_box">
-                  <button id="prevPage" class="pager_btn"><i class="fas fa-chevron-left"></i></button>
-                  <ul class="pager_" id="pagination"></ul>
-                  <button id="nextPage" class="pager_btn"><i class="fas fa-chevron-right"></i></button>
+                  <button id="prevPageassigned" class="pager_btn"><i class="fas fa-chevron-left"></i></button>
+                  <ul class="pager_" id="paginationassigned"></ul>
+                  <button id="nextPageassigned" class="pager_btn"><i class="fas fa-chevron-right"></i></button>
                 </div>
                 <div class="row_select jumper">Go to
-                  <select id="rowsPerPage">
+                  <select id="rowsPerPageassigned">
                     <option value="10">10</option>
-                    <option value="50">50</option>
-                    <option selected value="100">100</option>
+                    <option selected value="50">50</option>
+                    <option value="100">100</option>
                     <option value="200">200</option>
                   </select>
                 </div>
@@ -1451,7 +1453,217 @@ My Shine
         // Optionally handle the default case if no query parameter is provided
         activateTab('shine'); // Default to 'shine' if no tab parameter is present
     }
+  });
+
+// My Shine Search And status shorting and pegination
+  document.addEventListener('DOMContentLoaded', function() {
+  const searchInput = document.getElementById('searchInput');
+  const sortByStatus = document.getElementById('sort_by_status');
+  const rowsPerPageSelect = document.getElementById('rowsPerPage');
+  const prevPageButton = document.getElementById('prevPage');
+  const nextPageButton = document.getElementById('nextPage');
+  const paginationUl = document.getElementById('pagination');
+  const rowInfo = document.getElementById('rowInfo');
+  const table = document.getElementById('productTable');
+  const tableBody = document.getElementById('dataShine');
+  const tableRows = Array.from(tableBody.querySelectorAll('tr'));
+  
+  let currentPage = 1;
+  let rowsPerPage = parseInt(rowsPerPageSelect.value);
+  let filteredRows = tableRows;
+
+  // Function to render pagination
+  function renderPagination() {
+    paginationUl.innerHTML = '';
+    const totalPages = Math.ceil(filteredRows.length / rowsPerPage);
+
+    for (let i = 1; i <= totalPages; i++) {
+      const li = document.createElement('li');
+      li.textContent = i;
+      li.className = 'page-item' + (i === currentPage ? ' active' : '');
+      li.addEventListener('click', () => {
+        currentPage = i;
+        renderTable();
+      });
+      paginationUl.appendChild(li);
+    }
+
+    prevPageButton.disabled = currentPage === 1;
+    nextPageButton.disabled = currentPage === totalPages;
+    rowInfo.textContent = `Showing ${(currentPage - 1) * rowsPerPage + 1} to ${Math.min(currentPage * rowsPerPage, filteredRows.length)} of ${filteredRows.length} entries`;
+  }
+
+  // Function to render table rows based on pagination
+  function renderTable() {
+    tableBody.innerHTML = '';
+    const start = (currentPage - 1) * rowsPerPage;
+    const end = Math.min(currentPage * rowsPerPage, filteredRows.length);
+
+    for (let i = start; i < end; i++) {
+      tableBody.appendChild(filteredRows[i]);
+    }
+
+    renderPagination();
+  }
+
+  // Function to filter rows based on search and sort
+  function filterRows() {
+    const searchTerm = searchInput.value.toLowerCase();
+    const selectedStatus = sortByStatus.value;
+
+    filteredRows = tableRows.filter(row => {
+      const cells = row.getElementsByTagName('td');
+      let match = false;
+
+      // Check if the row matches the search term
+      for (let i = 0; i < cells.length - 1; i++) {
+        if (cells[i].textContent.toLowerCase().includes(searchTerm)) {
+          match = true;
+          break;
+        }
+      }
+
+      // Check if the row matches the selected status
+      const rowStatus = row.getAttribute('data-status');
+      if (selectedStatus !== 'NA' && rowStatus !== selectedStatus) {
+        match = false;
+      }
+
+      return match;
+    });
+
+    currentPage = 1;
+    renderTable();
+  }
+
+  // Event listeners
+  searchInput.addEventListener('input', filterRows);
+  sortByStatus.addEventListener('change', filterRows);
+  rowsPerPageSelect.addEventListener('change', () => {
+    rowsPerPage = parseInt(rowsPerPageSelect.value);
+    renderTable();
+  });
+
+  prevPageButton.addEventListener('click', () => {
+    if (currentPage > 1) {
+      currentPage--;
+      renderTable();
+    }
+  });
+
+  nextPageButton.addEventListener('click', () => {
+    const totalPages = Math.ceil(filteredRows.length / rowsPerPage);
+    if (currentPage < totalPages) {
+      currentPage++;
+      renderTable();
+    }
+  });
+
+  // Initial render
+  renderTable();
 });
+
+
+// Assigned Shine Search And status shorting and pegination
+document.addEventListener('DOMContentLoaded', function() {
+  const searchInput = document.getElementById('searchInputassigned');
+  const sortByStatus = document.getElementById('sort_by_statusassigned');
+  const rowsPerPageSelect = document.getElementById('rowsPerPageassigned');
+  const prevPageButton = document.getElementById('prevPageassigned');
+  const nextPageButton = document.getElementById('nextPageassigned');
+  const paginationUl = document.getElementById('paginationassigned');
+  const rowInfo = document.getElementById('rowInfoassigned');
+  const table = document.getElementById('productTableassigned');
+  const tableBody = document.getElementById('dataShineassigned');
+  const tableRows = Array.from(tableBody.querySelectorAll('tr'));
+
+  let currentPage = 1;
+  let rowsPerPage = parseInt(rowsPerPageSelect.value, 10);
+  let filteredRows = tableRows;
+
+  function renderPagination() {
+    paginationUl.innerHTML = '';
+    const totalPages = Math.ceil(filteredRows.length / rowsPerPage);
+
+    for (let i = 1; i <= totalPages; i++) {
+      const li = document.createElement('li');
+      li.textContent = i;
+      li.className = 'page-item' + (i === currentPage ? ' active' : '');
+      li.addEventListener('click', () => {
+        currentPage = i;
+        renderTable();
+      });
+      paginationUl.appendChild(li);
+    }
+
+    prevPageButton.disabled = currentPage === 1;
+    nextPageButton.disabled = currentPage === totalPages;
+    rowInfo.textContent = `Showing ${(currentPage - 1) * rowsPerPage + 1} to ${Math.min(currentPage * rowsPerPage, filteredRows.length)} of ${filteredRows.length} entries`;
+  }
+
+  function renderTable() {
+    tableBody.innerHTML = '';
+    const start = (currentPage - 1) * rowsPerPage;
+    const end = Math.min(currentPage * rowsPerPage, filteredRows.length);
+
+    for (let i = start; i < end; i++) {
+      tableBody.appendChild(filteredRows[i]);
+    }
+    renderPagination();
+  }
+
+  function filterRows() {
+    const searchTerm = searchInput.value.toLowerCase();
+    const selectedStatus = sortByStatus.value;
+
+    filteredRows = tableRows.filter(row => {
+      const cells = row.getElementsByTagName('td');
+      let match = false;
+
+      for (let i = 0; i < cells.length - 1; i++) {
+        if (cells[i].textContent.toLowerCase().includes(searchTerm)) {
+          match = true;
+          break;
+        }
+      }
+
+      const rowStatus = row.getAttribute('data-status-assigned');
+      if (selectedStatus !== 'NA' && rowStatus !== selectedStatus) {
+        match = false;
+      }
+
+      return match;
+    });
+
+    currentPage = 1;
+    renderTable();
+  }
+
+  searchInput.addEventListener('input', filterRows);
+  sortByStatus.addEventListener('change', filterRows);
+  rowsPerPageSelect.addEventListener('change', () => {
+    rowsPerPage = parseInt(rowsPerPageSelect.value, 10);
+    renderTable();
+  });
+
+  prevPageButton.addEventListener('click', () => {
+    if (currentPage > 1) {
+      currentPage--;
+      renderTable();
+    }
+  });
+
+  nextPageButton.addEventListener('click', () => {
+    const totalPages = Math.ceil(filteredRows.length / rowsPerPage);
+    if (currentPage < totalPages) {
+      currentPage++;
+      renderTable();
+    }
+  });
+
+  renderTable();
+});
+
 </script>
   
   
