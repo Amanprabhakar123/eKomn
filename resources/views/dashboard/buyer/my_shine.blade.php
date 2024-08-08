@@ -95,7 +95,7 @@ My Shine
                               <td colspan="9" style="text-align: center;">No Shine Data Found, Add New Shine First...</td>
                           </tr>
                       @else
-                      @foreach($shineProducts as $product)
+                      @foreach($shineProducts->reverse() as $product)
                           <tr>
                             <td>
                               <span id="batchId-{{ $product->id }}">{{ $product->batch_id }}</span>
@@ -239,7 +239,7 @@ My Shine
                             <td colspan="9" style="text-align: center;">Not Assigned Shine Yet, Add New Shine First...</td>
                         </tr>
                     @else
-                    @foreach($assignedProducts as $product)
+                    @foreach($assignedProducts->reverse() as $product)
                     <tr>
                       <td>
                         <span id="batchId-{{ $product->id }}">{{ $product->batch_id }}</span>
