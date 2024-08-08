@@ -1,6 +1,6 @@
 
 /** Set Base url */
-const baseURL = 'http://localhost:8000/api/';
+const baseURL = 'http://13.233.92.156/api/';
 
 /** Set Header Values */
 const makeHeader = () => {
