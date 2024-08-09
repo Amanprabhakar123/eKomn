@@ -28,12 +28,15 @@ class AssignShineJob implements ShouldQueue
         if ($this->product->assigner_id) {
             return;
         }
-
-        $matchingProduct = ShineProduct::where('amount', $this->product->amount)
-            ->where('status', ShineProduct::STATUS_PENDING)
-            ->where('id', '!=', $this->product->id)
-            ->where('user_id', '!=', $this->product->user_id)
-            ->first();
+        //
+        $matchingProduct = ShineProduct::whereBetween('amount', [
+            $this->product->amount * 0.9, 
+            $this->product->amount * 1.1
+        ])
+        ->where('status', ShineProduct::STATUS_PENDING)
+        ->where('id', '!=', $this->product->id)
+        ->where('user_id', '!=', $this->product->user_id)
+        ->first();
 
         if ($matchingProduct) {
             $this->product->assigner_id = $matchingProduct->user_id;

@@ -118,7 +118,12 @@
           <a class="nav-link collapsed nav-link-arrow" data-bs-toggle="collapse" href="#Shine"
             data-bs-parent="#dashboard_ekomn" id="components">
             <i class="fas fa-star menuIcon"></i>
+            @if(auth()->user()->hasRole(ROLE_ADMIN))
+            <span class="nav-link-text">Shine Control Panel</span>
+            @endif
+            @if(auth()->user()->hasRole(ROLE_BUYER))
             <span class="nav-link-text">Shine</span>
+            @endif
             <span class="menu_arrowIcon"><i class="fas fa-angle-right"></i></span>
           </a>
           <ul class="sidenav-second-level collapse" id="Shine" data-bs-parent="#dashboard_ekomn">

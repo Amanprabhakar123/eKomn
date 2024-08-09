@@ -76,9 +76,9 @@ My Shine
                           <small class="sort_t"><i class="fas fa-caret-up"></i><i class="fas fa-caret-down"></i></small>
                         </span>
                       </th>
-                      <th>Product Name</th>
+                      <th>Product Name/URL/Link</th>
                       {{-- <th>Platform</th> --}}
-                      <th>Product URL/Link</th>
+                      {{-- <th>Product URL/Link</th> --}}
                       <th>Product ID/ASIN</th>
                       {{-- <th>Seller/Brand Name</th> --}}
                       {{-- <th>Product Search Term </th> --}}
@@ -109,15 +109,15 @@ My Shine
                                 <span class="copy-message" style="display: none; margin-left: 5px; color: #FECA40;">Copied</span>
                             </td>
                             <td class="product-name" data-original-name="{{ $product->name }}">
-                                <span id="name-{{ $product->id }}">{{ $product->name }}</span>
-                                {{-- <i class="fas fa-copy copy-icon" style="cursor: pointer; margin-left: 5px;" onclick="copyToClipboard('name-{{ $product->id }}', this)"></i>
-                                <span class="copy-message" style="display: none; margin-left: 5px; color: #FECA40;">Copied</span> --}}
+                              <a href="{{ $product->url }}" target="_blank" id="name-{{ $product->id }}" class="product-link">
+                                  {{ $product->name }}
+                              </a>
                             </td>
-                            <td>
+                            {{-- <td>
                               <a target="_blank" href="{{ $product->url }}" id="url-{{ $product->id }}">Product Link</a>
-                              {{-- <i class="fas fa-copy copy-icon" style="cursor: pointer; margin-left: 5px;" onclick="copyToClipboard('url-{{ $product->id }}', this)"></i>
-                              <div class="copy-message" style="display: none; color: #FECA40;">Copied</div> --}}
-                            </td>
+                              <i class="fas fa-copy copy-icon" style="cursor: pointer; margin-left: 5px;" onclick="copyToClipboard('url-{{ $product->id }}', this)"></i>
+                              <div class="copy-message" style="display: none; color: #FECA40;">Copied</div>
+                            </td> --}}
                             <td>
                                 <span id="productId-{{ $product->id }}">{{ $product->product_id }}</span>
                                 {{-- <i class="fas fa-copy copy-icon" style="cursor: pointer; margin-left: 5px;" onclick="copyToClipboard('productId-{{ $product->id }}', this)"></i>
@@ -158,7 +158,7 @@ My Shine
                                     <span style='padding: 3px 7px; border-radius: 3px; background-color: #dc3545; color: #fff;'>Cancelled</span>
                                 @endif
                               </td>
-                              <td>      
+                              <td>
                                 <a href="{{ route('shine-status', $product->id) }}" class="btn btnekomn btn-sm {{ $product->status == 3 || $product->status == 5 ? 'blink' : '' }}">View Details</a>
                               </td>
                           </tr>
@@ -221,9 +221,9 @@ My Shine
                           <small class="sort_t"><i class="fas fa-caret-up"></i><i class="fas fa-caret-down"></i></small>
                         </span>
                       </th>
-                      <th>Product Name</th>
+                      <th>Product Name/URL/Link</th>
                       <th>Platform</th>
-                      <th>Product URL/Link</th>
+                      {{-- <th>Product URL/Link</th> --}}
                       <th>Product ID/ASIN</th>
                       {{-- <th>Seller/Brand Name</th>
                       <th>Product Search Term </th> --}}
@@ -254,16 +254,16 @@ My Shine
                         <div class="copy-message" style="display: none; color: #FECA40;">Copied</div>
                       </td>
                       <td class="product-name" data-original-name="{{ $product->name }}">
-                        <span id="name-{{ $product->id }}">{{ $product->name }}</span>
-                        {{-- <i class="fas fa-copy copy-icon" style="cursor: pointer; margin-left: 5px;" onclick="copyToClipboard('name-{{ $product->id }}', this)"></i>
-                        <div class="copy-message" style="display: none; color: #FECA40;">Copied</div> --}}
+                        <a href="{{ $product->url }}" target="_blank" id="name-{{ $product->id }}" class="product-link">
+                            {{ $product->name }}
+                        </a>
                       </td>
                       <td>{{ $product->platform }}</td>
-                      <td>
+                      {{-- <td>
                         <a target="_blank" href="{{ $product->url }}" id="url-{{ $product->id }}">Product Link</a>
-                        {{-- <i class="fas fa-copy copy-icon" style="cursor: pointer; margin-left: 5px;" onclick="copyToClipboard('url-{{ $product->id }}', this)"></i>
-                        <div class="copy-message" style="display: none; color: #FECA40;">Copied</div> --}}
-                      </td>
+                        <i class="fas fa-copy copy-icon" style="cursor: pointer; margin-left: 5px;" onclick="copyToClipboard('url-{{ $product->id }}', this)"></i>
+                        <div class="copy-message" style="display: none; color: #FECA40;">Copied</div>
+                      </td> --}}
                       <td>
                         <span id="productId-{{ $product->id }}">{{ $product->product_id }}</span>
                         {{-- <i class="fas fa-copy copy-icon" style="cursor: pointer; margin-left: 5px;" onclick="copyToClipboard('productId-{{ $product->id }}', this)"></i>
@@ -304,7 +304,9 @@ My Shine
                         @endif
                       </td>
                       <td>
-                        <a href="{{ route('complete-shine', $product->id) }}" class="btn btnekomn btn-sm {{ $product->status == 2 || $product->status == 4 ? 'blink' : '' }}">Complete Shine</a>
+                        <a href="{{ route('complete-shine', $product->id) }}" class="btn btnekomn btn-sm">Complete Shine</a>
+                        <div class="text-center mt-1 text-danger blink countdown" data-created-at="{{ $product->created_at }}" data-status="{{ $product->status }}"></div>
+                        {{-- <a href="{{ route('complete-shine', $product->id) }}" class="btn btnekomn btn-sm {{ $product->status == 2 || $product->status == 4 ? 'blink' : '' }}">Complete Shine</a> --}}
                       </td>
                     </tr>
                     @endforeach
@@ -1420,16 +1422,16 @@ My Shine
   
   // Script for product Name shorting
   function truncateWords(element, wordLimit) {
-      var text = element.textContent.trim();
-      var words = text.split(' ');
-      if (words.length > wordLimit) {
-          element.textContent = words.slice(0, wordLimit).join(' ') + '...';
-      }
+    var text = element.textContent.trim();
+    var words = text.split(' ');
+    if (words.length > wordLimit) {
+        element.textContent = words.slice(0, wordLimit).join(' ') + '...';
+    }
   }
 
   document.addEventListener('DOMContentLoaded', function() {
-    var productNames = document.querySelectorAll('.product-name span');
-    productNames.forEach(function(element) {
+    var productLinks = document.querySelectorAll('.product-name .product-link');
+    productLinks.forEach(function(element) {
         truncateWords(element, 3);
     });
   });
@@ -1667,6 +1669,51 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
   
   
-  
+ <script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Get all countdown elements
+    const countdownElements = document.querySelectorAll('.countdown');
+    
+    countdownElements.forEach(function(countdownElement) {
+        const status = countdownElement.getAttribute('data-status');
+
+        // Check if status is 3, if so, stop and hide the countdown
+        if (status != 2) {
+            countdownElement.style.display = 'none';
+            return; // Skip further processing for this element
+        }
+
+        const createdAt = new Date(countdownElement.getAttribute('data-created-at')).getTime();
+        
+        // Set the countdown duration (24 hours in milliseconds)
+        const countdownDuration = 24 * 60 * 60 * 1000;
+        
+        // Function to update the countdown timer
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const timeElapsed = now - createdAt;
+            const timeLeft = countdownDuration - timeElapsed;
+            
+            // Calculate hours, minutes, and seconds left
+            const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+            // Display the result
+            if (timeLeft >= 0) {
+                countdownElement.innerHTML = `${hours}h ${minutes}m ${seconds}s`;
+            } else {
+                // If the countdown is over, display "Expired"
+                countdownElement.innerHTML = "Expired";
+                clearInterval(countdownInterval);
+            }
+        }
+
+        // Update the countdown every second
+        updateCountdown();  // Initial call
+        const countdownInterval = setInterval(updateCountdown, 1000);
+    });
+});
+</script> 
 
 @endsection
