@@ -1148,15 +1148,10 @@ document.getElementById('cancelButton').addEventListener('click', function() {
           isValid = false;
       }
 
-      // const amount = $(`#request_${formNumber} #amount`).val().trim();
-      // if (amount === "" || isNaN(amount) || parseFloat(amount) <= 0) {
-      //     showError(`request_${formNumber} #amount`, "Valid Product Amount is required.");
-      //     isValid = false;
-      // }
-
-      if (amount === "" || isNaN(parsedAmount) || parsedAmount <= 0 || parsedAmount < 200 || parsedAmount > 400) {
-        showError(`request_${formNumber} #amount`, "Product Amount must be between 200 and 400.");
-        isValid = false;
+      const amount = $(`#request_${formNumber} #amount`).val().trim();
+      if (amount === "" || isNaN(amount) || parseFloat(amount) <= 0) {
+          showError(`request_${formNumber} #amount`, "Valid Product Amount is required.");
+          isValid = false;
       }
 
       const feedbackTitle = $(`#request_${formNumber} #feedback_title`).val().trim();
