@@ -347,13 +347,30 @@ function validateForm1(event) {
       contentType: false,
       processData: false,
       success: function(response) {
-        alert('Details updated successfully.');
-        $('#saveButton1').prop('disabled', true);
-        location.reload();
-      },
-      error: function(xhr) {
-        alert('Please upload pdf, jpg and png files while updating the details.');
-      }
+        Swal.fire({
+            title: 'Success',
+            text: 'Details updated successfully.',
+            icon: 'success',
+            confirmButtonText: 'OK',
+            customClass: {
+                confirmButton: 'custom-confirm-btn'
+            }
+          }).then(() => {
+            $('#saveButton1').prop('disabled', true);
+            location.reload(); // Reload the page after the user acknowledges the success message
+          });
+        },
+        error: function(xhr) {
+        Swal.fire({
+            title: 'Error',
+            text: 'Please upload PDF, JPG, or PNG files while updating the details.',
+            icon: 'error',
+            confirmButtonText: 'OK',
+            customClass: {
+                confirmButton: 'custom-error-btn'
+            }
+          });
+        }
     });
   }
 }
@@ -406,13 +423,29 @@ function validateForm2(event) {
             contentType: false,
             processData: false,
             success: function(response) {
-                alert('Acknowledgment of Shine Completion updated successfully.');
-                // Optionally, you can disable the submit button here
-                $('#saveButton2').attr('disabled', true);
-                location.reload();
+            Swal.fire({
+              title: 'Success',
+              text: 'Acknowledgment of Shine Completion updated successfully.',
+              icon: 'success',
+              confirmButtonText: 'OK',
+              customClass: {
+                confirmButton: 'custom-confirm-btn'
+              }
+            }).then(() => {
+            $('#saveButton1').prop('disabled', true);
+              location.reload(); // Reload the page after the user acknowledges the success message
+            });
             },
             error: function(xhr) {
-                alert('Please upload valid files (pdf, jpg, png) while updating the details.');
+            Swal.fire({
+              title: 'Error',
+              text: 'Please upload valid files (pdf, jpg, png) while updating the details.',
+              icon: 'error',
+              confirmButtonText: 'OK',
+              customClass: {
+                confirmButton: 'custom-error-btn'
+              }
+            });
             }
         });
     }

@@ -374,13 +374,30 @@ function validateForm1(event) {
       contentType: false,
       processData: false,
       success: function(response) {
-        alert('Thanks for your confirmation.');
-        $('#saveButton1').prop('disabled', true);
-        location.reload();
-      },
-      error: function(xhr) {
-        alert('error.');
-      }
+        Swal.fire({
+            title: 'Success',
+            text: 'Thanks for your confirmation.',
+            icon: 'success',
+            confirmButtonText: 'OK',
+            customClass: {
+                confirmButton: 'custom-confirm-btn'
+            }
+          }).then(() => {
+            $('#saveButton1').prop('disabled', true);
+            location.reload(); // Reload the page after the user acknowledges the success message
+          });
+        },
+        error: function(xhr) {
+        Swal.fire({
+            title: 'Error',
+            text: 'Please do after some time.',
+            icon: 'error',
+            confirmButtonText: 'OK',
+            customClass: {
+                confirmButton: 'custom-error-btn'
+            }
+          });
+        }
     });
   }
 }
@@ -413,12 +430,30 @@ function validateForm1(event) {
       contentType: false,
       processData: false,
       success: function(response) {
-        alert('Thanks for your confirmation.');
-        location.reload();
-      },
-      error: function(xhr) {
-        alert('error.');
-      }
+        Swal.fire({
+            title: 'Success',
+            text: 'Thanks for your confirmation.',
+            icon: 'success',
+            confirmButtonText: 'OK',
+            customClass: {
+                confirmButton: 'custom-confirm-btn'
+            }
+          }).then(() => {
+            $('#saveButton1').prop('disabled', true);
+            location.reload(); // Reload the page after the user acknowledges the success message
+          });
+        },
+        error: function(xhr) {
+        Swal.fire({
+            title: 'Error',
+            text: 'Please do after some time.',
+            icon: 'error',
+            confirmButtonText: 'OK',
+            customClass: {
+                confirmButton: 'custom-error-btn'
+            }
+          });
+        }
     });
   }
 }

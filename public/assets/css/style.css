@@ -1805,3 +1805,17 @@ textarea.resizer_none{resize:none!important;}
 
 
 /* end */
+
+
+
+.custom-confirm-btn {
+  background-color: #feca40 !important; /* Custom color */
+  color: white !important;              /* Text color */
+  border: none;                         /* Remove border */
+}
+
+.custom-error-btn {
+  background-color: #d33 !important;    /* Error button color */
+  color: white !important;              /* Text color */
+  border: none;                         /* Remove border */
+}

@@ -132,7 +132,7 @@
               <a class="nav-link" href="{{route('my-shine')}}">My Shine</a>
             </li>
             <li>
-              <a class="nav-link" href="{{route('new-shine')}}">New Shine</a>
+              <a class="nav-link" href="#" id="newshine-link">New Shine</a>
             </li>
             @endif
             @if(auth()->user()->hasRole(ROLE_ADMIN))

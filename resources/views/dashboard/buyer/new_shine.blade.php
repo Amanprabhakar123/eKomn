@@ -817,7 +817,16 @@ document.getElementById('cancelButton').addEventListener('click', function() {
                         }
                     });
                 } else {
-                    alert('Please select a rating between 4 and 5.'); // Show an alert if the rating is out of range
+                  // Show SweetAlert2 modal if the rating is out of range
+                    Swal.fire({
+                        title: 'Invalid Rating',
+                        text: 'Please select a rating between 4 and 5.',
+                        icon: 'warning',
+                        confirmButtonText: 'OK',
+                        customClass: {
+                          confirmButton: 'custom-confirm-btn'
+                        }
+                    });
                 }
             });
 
@@ -888,117 +897,119 @@ document.getElementById('cancelButton').addEventListener('click', function() {
   setBatchAndRequestIds();
   });
 
-$(document).ready(function() {
-  // Initial setup
-  updateTotalAmount();
+  $(document).ready(function() {
+    // Initial setup
+    init();
 
-  // Add event listeners for amount fields to update the total in real-time
-  $('input[name="amount[]"]').on('input', function() {
-      updateTotalAmount();
-  });
-
-  $('#shinetab1').click(function() {
-      let isValid = true;
-
-      // Clear previous error messages
-      $('.text-danger').addClass('hide');
-
-      // Validate first form
-      isValid &= validateForm('1');
-
-      // If the first form is valid, proceed to the second form
-      if (isValid) {
-        $('#request_1').removeClass('show active');
-        $('#request_2').addClass('show active');
-
-        // Also, update the tab button to show as active
-        $('a[href="#request_1"]').removeClass('active');
-        $('a[href="#request_2"]').addClass('active');
-      }
-  });
-
-  $('#shinetab2').click(function() {
-    let isValid = true;
-
-    // Clear previous error messages
-    $('.text-danger').addClass('hide');
-    
-    // Validate second form
-    isValid &= validateForm('2');
-
-    // If the second form is valid, proceed to the third form
-    if (isValid) {
-        $('#request_2').removeClass('show active');
-        $('#request_3').addClass('show active');
-
-        // Update the tab button to show as active
-        $('a[href="#request_2"]').removeClass('active');
-        $('a[href="#request_3"]').addClass('active');
+    function init() {
+        updateTotalAmount();
+        bindTabEvents();
+        bindSubmitEvent();
     }
-  });
 
-  $('#shinetab3').click(function() {
-    let isValid = true;
-
-    // Clear previous error messages
-    $('.text-danger').addClass('hide');
-    
-    // Validate third form
-    isValid &= validateForm('3');
-
-    // If the third form is valid, proceed to the fourth form
-    if (isValid) {
-        $('#request_3').removeClass('show active');
-        $('#request_4').addClass('show active');
-
-        // Update the tab button to show as active
-        $('a[href="#request_3"]').removeClass('active');
-        $('a[href="#request_4"]').addClass('active');
-    }
-  });
-
-  $('#shinetab4').click(function() {
-        let isValid = true;
-
-        // Clear previous error messages
-        $('.text-danger').addClass('hide');
-        
-        // Validate fourth form
-        isValid &= validateForm('4');
-
-        // If the fourth form is valid, proceed to the fifth form
-        if (isValid) {
-            $('#request_4').removeClass('show active');
-            $('#request_5').addClass('show active');
-
-            // Update the tab button to show as active
-            $('a[href="#request_4"]').removeClass('active');
-            $('a[href="#request_5"]').addClass('active');
+    function bindTabEvents() {
+        for (let i = 1; i <= 5; i++) {
+            $(`#shinetab${i}`).click(function() {
+                handleTabClick(i);
+            });
         }
-  });
+    }
 
-  $('#submitShineForm').click(function() {
+    function handleTabClick(tabIndex) {
+        let isValid = validateForm(tabIndex);
+
+        if (isValid) {
+            navigateToNextTab(tabIndex);
+        }
+    }
+
+    function navigateToNextTab(currentTabIndex) {
+        let nextTabIndex = currentTabIndex + 1;
+
+        $(`#request_${currentTabIndex}`).removeClass('show active');
+        $(`#request_${nextTabIndex}`).addClass('show active');
+
+        $(`a[href="#request_${currentTabIndex}"]`).removeClass('active');
+        $(`a[href="#request_${nextTabIndex}"]`).addClass('active');
+    }
+
+    function bindSubmitEvent() {
+        $('#submitShineForm').click(function() {
+            if (validateForm(5)) {
+                submitForm();
+            }
+        });
+    }
+
+    function validateForm(formNumber) {
         let isValid = true;
 
         // Clear previous error messages
         $('.text-danger').addClass('hide');
-        
-        // Validate fifth form
-        isValid &= validateForm('5');
 
-        if (isValid) {
-            // Collect data from all forms
+        const validations = [
+            { selector: `#request_${formNumber} #product_name`, rules: ['required', 'maxLength:300', 'noNumbers', 'noEmails', 'noUrls'], message: 'Product Name is required and cannot contain invalid characters.' },
+            { selector: `#request_${formNumber} #platform`, rules: ['required'], message: 'Platform is required.' },
+            { selector: `#request_${formNumber} #product_link`, rules: ['required', 'isValidURL'], message: 'Valid Product URL/Link is required.' },
+            { selector: `#request_${formNumber} #product_id`, rules: ['required', 'maxLength:30', 'noNumbers', 'noEmails', 'noUrls'], message: 'Product ID/ASIN is required and cannot contain invalid characters.' },
+            { selector: `#request_${formNumber} #seller_name`, rules: ['required', 'maxLength:20', 'noNumbers', 'noEmails', 'noUrls'], message: 'Seller/Brand Name is required and cannot contain invalid characters.' },
+            { selector: `#request_${formNumber} #search_term`, rules: ['required', 'maxLength:200', 'noNumbers', 'noEmails', 'noUrls'], message: 'Product Search Term is required and cannot contain invalid characters.' },
+            { selector: `#request_${formNumber} #amount`, rules: ['required', 'isPositiveNumber'], message: 'Valid Product Amount is required.' },
+            { selector: `#request_${formNumber} #feedback_title`, rules: ['required', 'maxLength:50', 'noNumbers', 'noEmails', 'noUrls'], message: 'Feedback/Review Title is required and cannot contain invalid characters.' },
+            { selector: `#request_${formNumber} #review_rating`, rules: ['required'], message: 'Review Rating is required.' },
+            { selector: `#request_${formNumber} #feedback_comment`, rules: ['required', 'maxLength:300', 'noNumbers', 'noEmails', 'noUrls'], message: 'Feedback Comment is required and cannot contain invalid characters.' }
+        ];
+
+        for (let validation of validations) {
+            if (!applyValidation(validation.selector, validation.rules)) {
+                showError(validation.selector, validation.message);
+                isValid = false;
+            }
+        }
+
+        return isValid;
+    }
+
+    function applyValidation(selector, rules) {
+        let value = $(selector).val().trim();
+
+        for (let rule of rules) {
+            if (rule === 'required' && value === '') return false;
+            if (rule.startsWith('maxLength:') && value.length > parseInt(rule.split(':')[1])) return false;
+            if (rule === 'noNumbers' && /^[\d\s\+\-()]+$/.test(value)) return false;
+            if (rule === 'noEmails' && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) return false;
+            if (rule === 'noUrls' && /^(https?:\/\/[^\s$.?#].[^\s]*)$/i.test(value)) return false;
+            if (rule === 'isValidURL' && !isValidURL(value)) return false;
+            if (rule === 'isPositiveNumber' && (isNaN(value) || parseFloat(value) <= 0)) return false;
+        }
+
+        return true;
+    }
+
+    function submitForm() {
+    // Show confirmation dialog before proceeding with form submission
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "Do you want to submit this Shine Request?",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, submit it!',
+        cancelButtonText: 'No, cancel!',
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        customClass: {
+            confirmButton: 'custom-confirm-btn',
+            cancelButton: 'custom-cancel-btn'
+        }
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // If user confirms, proceed with form submission
             const formData = new FormData();
 
-            // formData.append('batch_id', $('#batchId').val());
-            // formData.append('user_id', $('#userId').val());
-
-            // Collect form data from each request
             for (let i = 1; i <= 5; i++) {
                 collectFormData(formData, i.toString());
             }
 
-            // Submit the form data via AJAX or proceed to the next step
             $.ajax({
                 url: 'shine-products',
                 type: 'POST',
@@ -1006,17 +1017,44 @@ $(document).ready(function() {
                 processData: false,
                 contentType: false,
                 success: function(response) {
-                    // Handle success response
-                    alert('Your Shine Request submitted successfully!');
-                    window.location.href = '{{route('my-shine')}}';
+                    showSuccessMessage();
                 },
                 error: function(response) {
-                    // Handle error response
-                    alert('Error submitting form.');
+                    showErrorMessage();
                 }
             });
         }
-  });
+    });
+  }
+
+  function showSuccessMessage() {
+    Swal.fire({
+        title: 'Success!',
+        text: 'Your Shine Request submitted successfully! Now complete your Assigne Shine first...',
+        icon: 'success',
+        confirmButtonText: 'OK',
+        customClass: {
+            confirmButton: 'custom-confirm-btn'
+        }
+    }).then((result) => {
+        if (result.isConfirmed) {
+            window.location.href = '{{ route('my-shine') }}';
+        }
+    });
+  }
+
+  function showErrorMessage() {
+    Swal.fire({
+        title: 'Error!',
+        text: 'There was an error submitting your form. Please try again.',
+        icon: 'error',
+        confirmButtonText: 'OK',
+        customClass: {
+            confirmButton: 'custom-error-btn'
+        }
+    });
+  }
+
 
   function validateForm(formNumber) {
       let isValid = true;
@@ -1110,10 +1148,15 @@ $(document).ready(function() {
           isValid = false;
       }
 
-      const amount = $(`#request_${formNumber} #amount`).val().trim();
-      if (amount === "" || isNaN(amount) || parseFloat(amount) <= 0) {
-          showError(`request_${formNumber} #amount`, "Valid Product Amount is required.");
-          isValid = false;
+      // const amount = $(`#request_${formNumber} #amount`).val().trim();
+      // if (amount === "" || isNaN(amount) || parseFloat(amount) <= 0) {
+      //     showError(`request_${formNumber} #amount`, "Valid Product Amount is required.");
+      //     isValid = false;
+      // }
+
+      if (amount === "" || isNaN(parsedAmount) || parsedAmount <= 0 || parsedAmount < 200 || parsedAmount > 400) {
+        showError(`request_${formNumber} #amount`, "Product Amount must be between 200 and 400.");
+        isValid = false;
       }
 
       const feedbackTitle = $(`#request_${formNumber} #feedback_title`).val().trim();
@@ -1190,15 +1233,29 @@ $(document).ready(function() {
   }
 
   function updateTotalAmount() {
-        let totalAmount = 0;
-        $('input[name="amount[]"]').each(function() {
-            const amount = parseFloat($(this).val());
-            if (!isNaN(amount)) {
-                totalAmount += amount;
-            }
-        });
-        $('.btn.btnekomn.btn-sm.amount').text(`₹ ${totalAmount.toFixed(2)}`);
-    }
+    let totalAmount = 0;
+
+    // Log the beginning of the function execution
+    console.log('updateTotalAmount called');
+
+    $('input[name="amount[]"]').each(function() {
+        const amount = parseFloat($(this).val());
+        console.log(`Processed amount: ${amount}`); // Log each amount being processed
+        if (!isNaN(amount)) {
+            totalAmount += amount;
+        }
+    });
+
+    console.log(`Total Amount: ${totalAmount}`); // Log the total amount
+    $('.btn.btnekomn.btn-sm.amount').text(`₹ ${totalAmount.toFixed(2)}`);
+}
+
+// Bind the update function to input events on the amount fields
+$('input[name="amount[]"]').on('input', updateTotalAmount);
+
+// Optionally call updateTotalAmount on page load to set the initial value
+$(document).ready(updateTotalAmount);
+
 
 });
 </script>

@@ -15,8 +15,8 @@ My Shine
                 <h6>Shine Credit :</h6>
               </label>
               <a href="#" class="btn btnekomn btn-sm">₹ 2000</a>
-              <a href="popup-shine.html" style="margin-left: 10px;" class="btn btnekomn btn-sm text-black bold">Read me</a>
-              <a href="{{route('new-shine')}}" class="btn btnekomn btn-sm text-black bold">Add New Shine</a>
+              <a href="#" id="openModal" style="margin-left: 10px;" class="btn btnekomn btn-sm text-black bold">Read me</a>
+              <a href="#" id="newrequest" class="btn btnekomn btn-sm text-black bold">Add New Shine</a>
             </div>
           </div>
         </div>
@@ -1715,5 +1715,89 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 </script> 
+
+<script>
+  document.getElementById('openModal').addEventListener('click', function(event) {
+      event.preventDefault(); // Prevent the default link behavior
+      
+      Swal.fire({
+          title: "Shine Terms and Conditions",
+          html: `
+              <div>
+                  <p>By proceeding, you agree to the following terms:</p>
+                  <ul>
+                      <li>Term 1: Lorem ipsum dolor sit amet, consectetur adipiscing elit.</li>
+                      <li>Term 2: Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</li>
+                      <li>Term 3: Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</li>
+                  </ul>
+                  <p>Please read the terms carefully before proceeding.</p>
+              </div>
+          `,
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "I Agree",
+          cancelButtonText: "Close", // Set the text of the cancel button
+          customClass: {
+              confirmButton: 'swal2-confirm-btn',
+              cancelButton: 'swal2-cancel-btn'
+          },
+          didOpen: () => {
+              const title = Swal.getTitle();
+              title.style.fontSize = '25px';
+              const confirmButton = Swal.getConfirmButton();
+              confirmButton.style.backgroundColor = '#feca40';
+              confirmButton.style.color = 'white';
+          }
+      });
+  });
+
+  
+function showTermsAndConditions(event) {
+    event.preventDefault(); // Prevent the default link behavior
+    
+    Swal.fire({
+        title: "Shine Terms and Conditions",
+        html: `
+            <div>
+                <p>By proceeding, you agree to the following terms:</p>
+                <ul>
+                    <li>Term 1: Lorem ipsum dolor sit amet, consectetur adipiscing elit.</li>
+                    <li>Term 2: Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</li>
+                    <li>Term 3: Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</li>
+                </ul>
+                <p>Please read the terms carefully before proceeding.</p>
+            </div>
+        `,
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "I Agree",
+        cancelButtonText: "Close",
+        customClass: {
+            confirmButton: 'swal2-confirm-btn',
+            cancelButton: 'swal2-cancel-btn'
+        },
+        didOpen: () => {
+            const title = Swal.getTitle();
+            title.style.fontSize = '25px';
+            const confirmButton = Swal.getConfirmButton();
+            confirmButton.style.backgroundColor = '#feca40';
+            confirmButton.style.color = 'white';
+        }
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // If the user agrees, redirect to the new-shine route
+            window.location.href = "{{ route('new-shine') }}";
+        }
+    });
+}
+
+// Attach the same function to both elements
+document.getElementById('newrequest').addEventListener('click', showTermsAndConditions);
+document.getElementById('newshine-link').addEventListener('click', showTermsAndConditions);
+  </script>
 
 @endsection
