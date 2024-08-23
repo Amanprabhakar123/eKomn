@@ -129,6 +129,9 @@ Route::middleware(['auth', 'api', 'emailverified'])->group(function () {
     Route::get('newShine', [MyShineController::class, 'new_shine'])->name('new-shine');
     Route::get('Shine', [ShineController::class, 'shine'])->name('shine');
     Route::post('/shine-products', [MyShineController::class, 'addShine'])->name('shine.store');
+    Route::get('/fetch-shine-products', [ShineController::class, 'fetchShineProducts'])->name('fetch.shine.products');
+    Route::get('/shine-batch-details/{batch_id}', [ShineController::class, 'showBatchDetails'])->name('shine.product.details');
+
     // shine module routes
     Route::get('assignedShine/Status_{id}', [MyShineController::class, 'complete_shine'])->name('complete-shine');
     Route::get('myShine/Status_{id}', [MyShineController::class, 'shine_status'])->name('shine-status');

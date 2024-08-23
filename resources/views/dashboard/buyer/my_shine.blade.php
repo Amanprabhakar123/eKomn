@@ -15,8 +15,8 @@ My Shine
                 <h6>Shine Credit :</h6>
               </label>
               <a href="#" class="btn btnekomn btn-sm">₹ 2000</a>
-              <a href="#" id="openModal" style="margin-left: 10px;" class="btn btnekomn btn-sm text-black bold">Read me</a>
-              <a href="#" id="newrequest" class="btn btnekomn btn-sm text-black bold">Add New Shine</a>
+              <a href="#" id="" style="margin-left: 10px;" class="btn btnekomn btn-sm text-black bold">Read me</a>
+              <a href="#" id="openModal" class="btn btnekomn btn-sm text-black bold">Add New Shine</a>
             </div>
           </div>
         </div>
@@ -1717,66 +1717,40 @@ document.addEventListener('DOMContentLoaded', function() {
 </script> 
 
 <script>
-  document.getElementById('openModal').addEventListener('click', function(event) {
-      event.preventDefault(); // Prevent the default link behavior
-      
-      Swal.fire({
-          title: "Shine Terms and Conditions",
-          html: `
-              <div>
-                  <p>By proceeding, you agree to the following terms:</p>
-                  <ul>
-                      <li>Term 1: Lorem ipsum dolor sit amet, consectetur adipiscing elit.</li>
-                      <li>Term 2: Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</li>
-                      <li>Term 3: Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</li>
-                  </ul>
-                  <p>Please read the terms carefully before proceeding.</p>
-              </div>
-          `,
-          icon: "warning",
-          showCancelButton: true,
-          confirmButtonColor: "#3085d6",
-          cancelButtonColor: "#d33",
-          confirmButtonText: "I Agree",
-          cancelButtonText: "Close", // Set the text of the cancel button
-          customClass: {
-              confirmButton: 'swal2-confirm-btn',
-              cancelButton: 'swal2-cancel-btn'
-          },
-          didOpen: () => {
-              const title = Swal.getTitle();
-              title.style.fontSize = '25px';
-              const confirmButton = Swal.getConfirmButton();
-              confirmButton.style.backgroundColor = '#feca40';
-              confirmButton.style.color = 'white';
-          }
-      });
-  });
-
-  
-function showTermsAndConditions(event) {
+document.getElementById('openModal').addEventListener('click', async function(event) {
     event.preventDefault(); // Prevent the default link behavior
-    
-    Swal.fire({
-        title: "Shine Terms and Conditions",
+
+    const { value: accept } = await Swal.fire({
+        title: "Must Read...!",
         html: `
             <div>
-                <p>By proceeding, you agree to the following terms:</p>
+                <h4 style="margin: 0;"><b>eKomn Shine - Usage guidelines and Terms<b></h4>
+                <p class="pt-3">eKomn shine is a product feedback/review program that you can use to get professional reviews for your product and showcase them on selected platforms. It is a voluntary program primarily designed to assist online sellers to support each other as a community. The objective is to create better opportunities to grow their online selling business across various platforms. We urge you to review below guidelines and terms before you start using this module.</p>
                 <ul>
-                    <li>Term 1: Lorem ipsum dolor sit amet, consectetur adipiscing elit.</li>
-                    <li>Term 2: Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</li>
-                    <li>Term 3: Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</li>
+                    <li>Term 1: Shine is a product review module and you are requested to participate mutually and reciprocate for every product feedback request that you raise for your products.</li>
+                    <li>Term 2: You are not required to make any payment for this service. For each request raised, an equal value request shall be assigned to you that you must complete.</li>
+                    <li>Term 3: Your product review request shall be processed only when you complete your own assigned requests.</li>
+                    <li>Term 4: Each assigned Shine request must be processed within <b>48</b> hours else your own request will be disqualified and you will be asked to reinitiate it again.</li>
+                    <li>Term 5: For beginners, the product value of each Shine request is restricted between <b>200 to 500</b>. As you use the service, you will auto qualify for higher value product orders.</li>
+                    <li>Term 6: Usually, a Shine product review takes <b>15-20</b> days before a product review is visible on the selected platform. You are advised to regularly visit Shine module and take action on all notifications related to your Own as well as Assigned requests.</li>
+                    <li>Term 7: You are advised to opt for products that you dispatch from your own store and not done through a platform warehouse. This will help you manage the shipment of actual products for each Shine request optimally.</li>
                 </ul>
-                <p>Please read the terms carefully before proceeding.</p>
+                <p>Please read the Guidelines and Terms carefully before proceeding.</p>
             </div>
         `,
-        icon: "warning",
+        input: "checkbox",
+        inputValue: 0,
+        inputPlaceholder: "I agree with the Guidelines and Terms",
+        confirmButtonText: "I Agree !  &nbsp;<i class='fa fa-arrow-right'></i>",
+        inputValidator: (result) => {
+            return !result && "You need to agree with Guidelines and Terms";
+        },
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
-        confirmButtonText: "I Agree",
         cancelButtonText: "Close",
         customClass: {
+            title: 'swal2-title-red', 
             confirmButton: 'swal2-confirm-btn',
             cancelButton: 'swal2-cancel-btn'
         },
@@ -1787,13 +1761,19 @@ function showTermsAndConditions(event) {
             confirmButton.style.backgroundColor = '#feca40';
             confirmButton.style.color = 'white';
         }
-    }).then((result) => {
-        if (result.isConfirmed) {
-            // If the user agrees, redirect to the new-shine route
-            window.location.href = "{{ route('new-shine') }}";
-        }
     });
-}
+    
+    if (accept) {
+      Swal.fire({
+        title: "Thanks for reading the shine guidelines. We wish you great business growth !!",
+        icon: "success",
+        confirmButtonColor: "#FFB20C", // Directly sets the button color
+      }).then(() => {
+        // Redirect to the new page
+        window.location.href = "{{ route('new-shine') }}";
+      });
+    }
+});
 
 // Attach the same function to both elements
 document.getElementById('newrequest').addEventListener('click', showTermsAndConditions);
